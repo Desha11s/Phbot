@@ -11,8 +11,8 @@ import sqlite3
 import urllib.request
 import re
 import shutil
-pName = 'xAkashaHelperCreb'
-pVersion = '2.5'
+pName = 'xAkashaHelper'
+pVersion = '2.6'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/xAkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
