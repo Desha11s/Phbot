@@ -10,7 +10,7 @@ import os
 import sqlite3
 
 pName = 'xAkashaHelperCreb'
-pVersion = '2.2'
+pVersion = '2.3'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/blob/main/xAkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
