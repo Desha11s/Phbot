@@ -10,8 +10,8 @@ import os
 import sqlite3
 
 pName = 'xAkashaHelperCreb'
-pVersion = '2.1'
-pUrl = 'https://raw.githubusercontent.com/JellyBitz/phBot-xPlugins/master/xControl.py'
+pVersion = '2.2'
+pUrl = 'https://github.dev/Desha11s/Phbot/blob/main/xAkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
 
