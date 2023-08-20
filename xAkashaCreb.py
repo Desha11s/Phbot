@@ -32,6 +32,7 @@ QtBind.createLabel(gui,'- att : starts bot\n- stop : stops bot\n- trace :starts 
 #QtBind.createLabel(gui,'- INJECT #Opcode #Encrypted? #Data? : Inject packet\n- CHAT #Type #Message : Send any message type\n- FOLLOW #Player? #Distance? : Trace a party player using distance\n- NOFOLLOW : Stop following\n- JUMP : Generate knockback visual effect\n- SIT : Sit or Stand up, depends\n- CAPE #Type? : Use PVP Cape\n- EQUIP #ItemName : Equips an item from inventory\n- UNEQUIP #ItemName : Unequips item from character\n- REVERSE #Type #Name?\n- GETPOS : Gets current position\n- USE #ItemName : Use item from inventory',345,60)
 btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,21,30,400,20)
+lstPluginsData = []
 btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Updates  ",310,8)
 #btn = QtBind.createCheckBox(gui, 'CbxDoNothing', 'Buy', 210, 30)
 dwchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Donwhang', 10, 10 )
