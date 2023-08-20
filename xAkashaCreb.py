@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'xAkashaHelper'
-pVersion = '2.6'
+pVersion = '2.1'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/xAkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -27,13 +27,13 @@ followDistance = 0
 gui = QtBind.init(__name__,pName)
 QtBind.createLabel(gui,'Created by Akasha for Cerberus Online',525,10)
 QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',525,260)
-QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,50)
+QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- att : starts bot\n- stop : stops bot\n- trace :starts trace\n- notrace : Stop trace\n- RETURN : back to town\n- GO : X Y --> will go to these coords\n- locate : tells you the current location\n- dwq : Take&Deliver dw quests (must be near npc)\n- HWT : teleports to HWT intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point',10,70)
 #QtBind.createLabel(gui,'- INJECT #Opcode #Encrypted? #Data? : Inject packet\n- CHAT #Type #Message : Send any message type\n- FOLLOW #Player? #Distance? : Trace a party player using distance\n- NOFOLLOW : Stop following\n- JUMP : Generate knockback visual effect\n- SIT : Sit or Stand up, depends\n- CAPE #Type? : Use PVP Cape\n- EQUIP #ItemName : Equips an item from inventory\n- UNEQUIP #ItemName : Unequips item from character\n- REVERSE #Type #Name?\n- GETPOS : Gets current position\n- USE #ItemName : Use item from inventory',345,60)
 btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
-lvwPlugins = QtBind.createList(gui,21,30,400,20)
+lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
-btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Updates  ",310,8)
+btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Update  ",300,8)
 #btn = QtBind.createCheckBox(gui, 'CbxDoNothing', 'Buy', 210, 30)
 dwchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Donwhang', 10, 10 )
 conchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Constantinpole', 100, 10 )
