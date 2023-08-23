@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '2.1'
+pVersion = '2.2'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -29,7 +29,7 @@ QtBind.createLabel(gui,'Created by Akasha for Cerberus Online',525,10)
 QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',525,260)
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- att : starts bot\n- stop : stops bot\n- trace :starts trace\n- notrace : Stop trace\n- RETURN : back to town\n- GO : X Y --> will go to these coords\n- locate : tells you the current location\n- dwq : Take&Deliver dw quests (must be near npc)\n- HWT : teleports to HWT intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point',10,70)
-#QtBind.createLabel(gui,'- INJECT #Opcode #Encrypted? #Data? : Inject packet\n- CHAT #Type #Message : Send any message type\n- FOLLOW #Player? #Distance? : Trace a party player using distance\n- NOFOLLOW : Stop following\n- JUMP : Generate knockback visual effect\n- SIT : Sit or Stand up, depends\n- CAPE #Type? : Use PVP Cape\n- EQUIP #ItemName : Equips an item from inventory\n- UNEQUIP #ItemName : Unequips item from character\n- REVERSE #Type #Name?\n- GETPOS : Gets current position\n- USE #ItemName : Use item from inventory',345,60)
+QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regtower : register Tower Defend \n- reglms :    register  Last Man Standing\n- regLS :      register  Lottery Silk\n- regmag :   register  Survival Magic\n- regsolo :   register  Survival Solo\n- regmaze:  register  Maze LMS\n- regpvp :    register  Random PvP\n- reguniq :   register  Random Unique',260,70)
 btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
@@ -617,7 +617,23 @@ def handle_chat(t,player,msg):
 			if acc_name == 'Veigor':
 				inject_joymax(0xA459,b'\x06\x00\x41\x6B\x73\x68\x61\x4E\x0F',False)
 			if acc_name == 'xXAkshaNXx':
-				inject_joymax(0xA459,b'\x06\x00\x41\x6B\x73\x68\x61\x4E\x14',False)			
+				inject_joymax(0xA459,b'\x06\x00\x41\x6B\x73\x68\x61\x4E\x14',False)
+		elif msg == 'regtower':
+			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x54\x68\x65\x20\x54\x6F\x77\x65\x72',False)
+		elif msg == 'reglms':
+			inject_joymax(0xC006,b'\x00\x11\x00\x4C\x61\x73\x74\x20\x4D\x61\x6E\x20\x53\x74\x61\x6E\x64\x69\x6E\x67',False)
+		elif msg == 'regLS':
+			inject_joymax(0xC006,b'\x00\x0C\x00\x4C\x6F\x74\x74\x65\x72\x79\x20\x53\x69\x6C\x6B',False)
+		elif msg == 'regmag':
+			inject_joymax(0xC006,b'\x00\x10\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x4D\x61\x67\x69\x63\x29',False)
+		elif msg == 'regsolo':
+			inject_joymax(0xC006,b'\x00\x0F\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x53\x6F\x6C\x6F\x29',False)
+		elif msg == 'regmaze':
+			inject_joymax(0xC006,b'\x00\x08\x00\x4D\x61\x7A\x65\x20\x4C\x4D\x53',False)
+		elif msg == 'reguniq':
+			inject_joymax(0xC006,b'\x00\x0F\x00\x55\x6E\x69\x71\x75\x65\x20\x4D\x61\x74\x63\x68\x69\x6E\x67',False)
+		elif msg == 'regpvp':
+			inject_joymax(0xC006,b'\x00\x0C\x00\x50\x56\x50\x20\x4D\x61\x74\x63\x68\x69\x6Ex67',False)
 		elif msg == 'att':
 			start_bot()
 			log("Plugin: Bot started")
