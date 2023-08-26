@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '2.2'
+pVersion = '2.3'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -102,7 +102,7 @@ def kawep():
 			slot_byte = bytes.fromhex(slot_hex)
 			op = 0x7118
 			if QtBind.isChecked(gui, dwchk):
-				da = b'\xEE\x00\x00\x00\x3E\x0F\x00\x00'
+				da = b'\xEF\x00\x00\x00\x11\x13\x00\x00'
 				data = da + slot_byte
 				inject_joymax(op, data, False)
 				log(f'Injecting {data.hex()} - Trying on Devil S')
@@ -112,7 +112,7 @@ def kawep():
 			else:
 				log('Magic Pop plugin: Please choose a town first')
 			if QtBind.isChecked(gui, conchk):
-				da = b'\xEE\x00\x00\x00\x3E\x0F\x00\x00'
+				da = b'\xEF\x00\x00\x00\x11\x13\x00\x00'
 				data = da + slot_byte
 				inject_joymax(op, data, False)
 				log(f'Injecting {data.hex()} - Trying on Devil S')
@@ -650,6 +650,16 @@ def handle_chat(t,player,msg):
 				msg = msg[5:].split()[0]
 				if start_trace(msg):
 					log("Plugin: Starting trace to ["+msg+"]")
+		elif msg.startswith("t"):
+			# deletes empty spaces on right
+			msg = msg.rstrip()
+		if msg == "t":
+			if start_trace(player):
+				log("Plugin: Starting trace to ["+player+"]")
+			else:
+				msg = msg[1:].split()[0]
+				if start_trace(msg):
+					log("Plugin: Starting trace to ["+msg+"]")
 		elif msg.startswith("TRACE"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
@@ -671,6 +681,9 @@ def handle_chat(t,player,msg):
 				if start_trace(msg):
 					log("Plugin: Starting trace to ["+msg+"]")
 		elif msg == "notrace":
+			stop_trace()
+			log("Plugin: Trace stopped")
+		elif msg == "nt":
 			stop_trace()
 			log("Plugin: Trace stopped")
 		elif msg == 'BAG':
