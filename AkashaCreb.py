@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '2.3'
+pVersion = '2.4'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -618,29 +618,29 @@ def handle_chat(t,player,msg):
 				inject_joymax(0xA459,b'\x06\x00\x41\x6B\x73\x68\x61\x4E\x0F',False)
 			if acc_name == 'xXAkshaNXx':
 				inject_joymax(0xA459,b'\x06\x00\x41\x6B\x73\x68\x61\x4E\x14',False)
-		elif msg == 'regtower':
+		if msg == 'regtower':
 			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x54\x68\x65\x20\x54\x6F\x77\x65\x72',False)
-		elif msg == 'reglms':
+		if msg == 'reglms':
 			inject_joymax(0xC006,b'\x00\x11\x00\x4C\x61\x73\x74\x20\x4D\x61\x6E\x20\x53\x74\x61\x6E\x64\x69\x6E\x67',False)
-		elif msg == 'regLS':
+		if msg == 'regLS':
 			inject_joymax(0xC006,b'\x00\x0C\x00\x4C\x6F\x74\x74\x65\x72\x79\x20\x53\x69\x6C\x6B',False)
-		elif msg == 'regmag':
+		if msg == 'regmag':
 			inject_joymax(0xC006,b'\x00\x10\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x4D\x61\x67\x69\x63\x29',False)
-		elif msg == 'regsolo':
+		if msg == 'regsolo':
 			inject_joymax(0xC006,b'\x00\x0F\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x53\x6F\x6C\x6F\x29',False)
-		elif msg == 'regmaze':
+		if msg == 'regmaze':
 			inject_joymax(0xC006,b'\x00\x08\x00\x4D\x61\x7A\x65\x20\x4C\x4D\x53',False)
-		elif msg == 'reguniq':
+		if msg == 'reguniq':
 			inject_joymax(0xC006,b'\x00\x0F\x00\x55\x6E\x69\x71\x75\x65\x20\x4D\x61\x74\x63\x68\x69\x6E\x67',False)
-		elif msg == 'regpvp':
+		if msg == 'regpvp':
 			inject_joymax(0xC006,b'\x00\x0C\x00\x50\x56\x50\x20\x4D\x61\x74\x63\x68\x69\x6Ex67',False)
-		elif msg == 'att':
+		if msg == 'att':
 			start_bot()
 			log("Plugin: Bot started")
-		elif msg == "stop":
+		if msg == "stop":
 			stop_bot()
 			log("Plugin: Bot stopped")
-		elif msg.startswith("trace"):
+		if msg.startswith("trace"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
 		if msg == "trace":
@@ -686,13 +686,13 @@ def handle_chat(t,player,msg):
 		elif msg == "nt":
 			stop_trace()
 			log("Plugin: Trace stopped")
-		elif msg == 'BAG':
+		if msg == 'BAG':
 			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\x15\x01\x00\x00',False)
-		elif msg == 'DW':
+		if msg == 'DW':
 			inject_joymax(0x705A,b'\x04\x00\x00\x00\x02\x02\x00\x00\x00',False)
-		elif msg == 'ALEX':
+		if msg == 'ALEX':
 			inject_joymax(0x705A,b'\x04\x00\x00\x00\x02\xAF\x00\x00\x00',False)
-		elif msg.startswith("GO"):
+		if msg.startswith("GO"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
 			if msg == "GO":
@@ -713,64 +713,64 @@ def handle_chat(t,player,msg):
 				except:
 					log("Plugin: Wrong training area coordinates!")
 			start_bot()
-		elif msg == "dwq":
+		if msg == "dwq":
 			#A Falling star
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			#quest lv 60
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x06',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			#quest lv 75
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x07',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			#quest lv 85
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x08',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x09',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			#quest job 101+
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x0A',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			#quest garden
-			inject_joymax(0x7045,b'\x25\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x25\x01\x00\x00\x02',False)
+			inject_joymax(0x7045,b'\x26\x01\x00\x00',False)
+			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x0B',False)
 			inject_joymax(0x30D4,b'\x05',False)
 			inject_joymax(0x30D4,b'\x05',False)			
-		elif msg == 'locate':
+		if msg == 'locate':
 			# Check current position
 			pos = get_position()
 			phBotChat.Private(player,'mkany (X:%.1f,Y:%.1f,Z:%1f,Region:%d)'%(pos['x'],pos['y'],pos['z'],pos['region']))
-		elif msg.startswith("HWT2"):
+		if msg.startswith("HWT2"):
 			inject_teleport("Kings Valley","Pharaoh tomb (intermediate)")
-		elif msg.startswith("HWT1"):
+		if msg.startswith("HWT1"):
 			inject_teleport("Kings Valley","Pharaoh tomb (beginner)")
-		elif msg.startswith("Q1"):
+		if msg.startswith("Q1"):
 			inject_teleport("Harbor Manager Marwa","Pirate Morgun") or inject_teleport("Pirate Morgun","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Pirate Morgun") or inject_teleport("Priate Blackbeard","Harbor Manager Gale") or inject_teleport("Aircraft Ticket Seller Shard","Aircraft Ticket Seller Sangnia") or inject_teleport("Aircraft Ticket Seller Sangnia","Aircraft Ticket Seller Shard") or inject_teleport("Tunnel Manager Salhap","Tunnel Manager Maryokuk") or inject_teleport("Tunnel Manager Maryokuk","Tunnel Manager Salhap") or inject_teleport("Tunnel Manager Topni","Tunnel Manager Asui") or inject_teleport("Tunnel Manager Asui","Tunnel Manager Topni") or inject_teleport("Aircraft Ticket Seller Saena","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Ajati") or inject_teleport("Boat Ticket Seller Rahan","Boat Ticket Seller Salmai") or inject_teleport("Boat Ticket Seller Salmai","Boat Ticket Seller Rahan") or inject_teleport("Boat Ticket Seller Asimo","Boat Ticket Seller Asa") or inject_teleport("Boat Ticket Seller Asa","Boat Ticket Seller Asimo") or inject_teleport("Ferry Ticket Seller Tayun","Ferry Ticket Seller Doji") or inject_teleport("Ferry Ticket Seller Doji","Ferry Ticket Seller Tayun") or inject_teleport("Ferry Ticket Seller Hageuk","Ferry Ticket Seller Chau") or inject_teleport("Ferry Ticket Seller Chau","Ferry Ticket Seller Hageuk") or inject_teleport("forbidden plain","Kings Valley") or inject_teleport("Kings Valley","forbidden plain") or inject_teleport("abundance ground","Storm and cloud Desert") or inject_teleport("Storm and cloud Desert","abundance ground")
-		elif msg.startswith("Q2"):
+		if msg.startswith("Q2"):
 			inject_teleport("Harbor Manager Marwa","Priate Blackbeard") or inject_teleport("Harbor Manager Gale","Priate Blackbeard") or inject_teleport("Pirate Morgun","Harbor Manager Marwa") or inject_teleport("Priate Blackbeard","Harbor Manager Marwa") or inject_teleport("Aircraft Ticket Seller Saena","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Poy") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Poy")
-		elif msg.startswith("Q3"):
+		if msg.startswith("Q3"):
 			inject_teleport("Harbor Manager Marwa","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Harbor Manager Marwa") or inject_teleport("Aircraft Ticket Seller Ajati","Aircraft Ticket Seller Saena") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Saena")
 
-		elif msg.startswith("SETR"):
+		if msg.startswith("SETR"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
 			if msg == "SETR":
@@ -788,19 +788,19 @@ def handle_chat(t,player,msg):
 					log("Plugin: Training radius set to "+str(radius)+" m.")
 				except:
 					log("Plugin: Wrong training radius value!")
-		elif msg.startswith('SETAREA '):
+		if msg.startswith('GOO '):
 			# deletes empty spaces on right
-			msg = msg[8:]
+			msg = msg[4:]
 			if msg:
 				# try to change to specified area name
 				if set_training_area(msg):
 					log('Plugin: Training area has been changed to ['+msg+']')
 				else:
 					log('Plugin: Training area ['+msg+'] not found in the list')
-		elif msg == "ZERK":
+		if msg == "ZERK":
 			log("Plugin: Using Berserker mode")
 			inject_joymax(0x70A7,b'\x01',False)
-		elif msg == "RETURN":
+		if msg == "RETURN":
 			# Quickly check if is dead
 			character = get_character_data()
 			if character['hp'] == 0:
@@ -811,7 +811,7 @@ def handle_chat(t,player,msg):
 				log('Plugin: Trying to use return scroll...')
 				# Avoid high CPU usage with too many chars at the same time
 				Timer(random.uniform(0.5,2),use_return_scroll).start()
-		elif msg.startswith("TP"):
+		if msg.startswith("TP"):
 			# deletes command header and whatever used as separator
 			msg = msg[3:]
 			if not msg:
@@ -823,7 +823,7 @@ def handle_chat(t,player,msg):
 			# needs to be at least two name points to try teleporting
 			if len(source_dest) >= 2:
 				inject_teleport(source_dest[0].strip(),source_dest[1].strip())
-		elif msg.startswith("INJECT "):
+		if msg.startswith("INJECT "):
 			msgPacket = msg[7:].split()
 			msgPacketLen = len(msgPacket)
 			if msgPacketLen == 0:
@@ -845,25 +845,25 @@ def handle_chat(t,player,msg):
 			inject_joymax(opcode,data,encrypted)
 			# Log the info
 			log("Plugin: Injecting packet...\nOpcode: 0x"+'{:02X}'.format(opcode)+" - Encrypted: "+("Yes" if encrypted else "No")+"\nData: "+(' '.join('{:02X}'.format(int(msgPacket[x],16)) for x in range(dataIndex, msgPacketLen)) if len(data) else 'None'))
-		elif msg.startswith("CHAT "):
+		if msg.startswith("CHAT "):
 			handleChatCommand(msg[5:])
-		elif msg == "DC":
+		if msg == "DC":
 			log("Plugin: Disconnecting...")
 			disconnect()
-		elif msg == "leave":
+		if msg == "leave":
 			# Check if has party
 			if get_party():
 				# Left it
 				log("Plugin: Leaving the party..")
 				inject_joymax(0x7061,b'',False)
-		elif msg.startswith("RECALL "):
+		if msg.startswith("RECALL "):
 			msg = msg[7:]
 			if msg:
 				npcUID = GetNPCUniqueID(msg)
 				if npcUID > 0:
 					log("Plugin: Designating recall to \""+msg.title()+"\"...")
 					inject_joymax(0x7059, struct.pack('I',npcUID), False)
-		elif msg.startswith("EQUIP "):
+		if msg.startswith("EQUIP "):
 			msg = msg[6:]
 			if msg:
 				# search item with similar name or exact server name
@@ -871,14 +871,14 @@ def handle_chat(t,player,msg):
 				if item:
 					EquipItem(item)
 		
-		elif msg.startswith("UNEQUIP "):
+		if msg.startswith("UNEQUIP "):
 			msg = msg[8:]
 			if msg:
 				# search item with similar name or exact server name
 				item = GetItemByExpression(lambda n,s: msg in n or msg == s,0,12)
 				if item:
 					UnequipItem(item)
-		elif msg.startswith("R "):
+		if msg.startswith("R "):
 			# remove command
 			msg = msg[2:]
 			if msg:
@@ -905,7 +905,7 @@ def handle_chat(t,player,msg):
 						# try to use it
 						if reverse_return(3,msg[1]):
 							log('Plugin: Using reverse to zone "'+msg[1]+'" location')
-		elif msg.startswith("USE "):
+		if msg.startswith("USE "):
 			# remove command
 			msg = msg[4:]
 			if msg:
@@ -913,6 +913,14 @@ def handle_chat(t,player,msg):
 				item = GetItemByExpression(lambda n,s: msg in n or msg == s,13)
 				if item:
 					UseItem(item)
+		if msg.startswith('tef'):
+			words = msg.split()
+			if len(words) > 0 and words[0] == 'tef':
+				last_word = words[-1]
+				etmsg = f'ETFO5SSS 3alek ya 3amo {last_word} :D'
+				phBotChat.All(etmsg)
+		if msg == "2ool 1":
+			phBotChat.Private(player,'nakk 3belwa7ed')
 
 # Called every 500ms
 def event_loop():
