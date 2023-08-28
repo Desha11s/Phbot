@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '2.4'
+pVersion = '2.5'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -754,7 +754,8 @@ def handle_chat(t,player,msg):
 			inject_joymax(0x7046,b'\x26\x01\x00\x00\x02',False)
 			inject_joymax(0x30D4,b'\x0B',False)
 			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)			
+			inject_joymax(0x30D4,b'\x05',False)
+			log('AkashaHelper: done all quests taken or delivered')		
 		if msg == 'locate':
 			# Check current position
 			pos = get_position()
