@@ -14,7 +14,7 @@ import shutil
 import requests
 pName = 'AkashaHelperdo'
 pVersion = '3.0'
-pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
+pUrl = 'https://github.com/Desha11s/Phbot/blob/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
 
