@@ -11,8 +11,9 @@ import sqlite3
 import urllib.request
 import re
 import shutil
-pName = 'AkashaHelper'
-pVersion = '2.7'
+import requests
+pName = 'AkashaHelperdo'
+pVersion = '3.0'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaCreb.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -27,10 +28,11 @@ followDistance = 0
 gui = QtBind.init(__name__,pName)
 largetong = 0
 QtBind.createLabel(gui,'Created by Akasha for Cerberus Online',525,10)
-QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',525,260)
+QtBind.createLabel(gui,'Created by Akasha for Sargon Online',525,10)
+QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',545,260)
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
-QtBind.createLabel(gui,'- att : starts bot\n- stop : stops bot\n- trace :starts trace\n- notrace : Stop trace\n- RETURN : back to town\n- GO : X Y --> will go to these coords\n- locate : tells you the current location\n- dwq : Take&Deliver dw quests (must be near npc)\n- HWT : teleports to HWT intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point',10,70)
-QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regtower : register Tower Defend \n- reglms :    register  Last Man Standing\n- regLS :      register  Lottery Silk\n- regmag :   register  Survival Magic\n- regsolo :   register  Survival Solo\n- regmaze:  register  Maze LMS\n- regpvp :    register  Random PvP\n- reguniq :   register  Random Unique',260,70)
+QtBind.createLabel(gui,'- GO : starts bot at current location\n- stop : stops bot and trace\n- trace or t or cmd trace :starts trace\n- nt : Stop trace\n- R : back to town or wake up\n- GO + X Y --> will go to these coords\n- locate : tells you the coords and region\n- rm : makes random movement\n- HWT1 : teleports to HWT beginner\n- HWT2 teleports to HWT Intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point\n- gold : tells you how much gold you have\n- sort : sort your inventory ',10,70)
+QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regtower : register Tower Defend \n- reglms :    register  Last Man Standing\n- regLS :      register  Lottery Silk\n- regsolo :   register  Survival Solo\n- regmaze:  register  Maze LMS\n- regpvp :    register  Random PvP\n- reguniq :   register  Random Unique\n- cards : tells you what fgw card you have and shields egy\n- prog : checks custom quest progress\n- check : tells you how many immo+astral you have\n- coins : Tells you how many coins you have\n- quest? : tells you if you have a custom quest or no',260,70)
 btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
@@ -38,7 +40,7 @@ btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Update  ",300,8)
 #btn = QtBind.createCheckBox(gui, 'CbxDoNothing', 'Buy', 210, 30)
 dwchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Donwhang', 10, 10 )
 conchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Constantinpole', 100, 10 )
-btnwep = QtBind.createButton(gui, 'on_wep_click', 'Lucky Hit (Devil S)', 200, 8)
+btnwep = QtBind.createButton(gui, 'ReverseToCharacter', 'Lucky Hit (Devil S)', 200, 8)
 #btnwep = QtBind.createButton(gui, 'dwq', 'DW QUEST', 10, 90)
 bakborta = ['fare2 el bkbortatttttttttt','ba ka bo rtaaaaaaa']
 shtema = ['enta 5awl ','adek tzmr ','anekk t2ol ahhhh ','adek tf7r ','kosomak ','tezak de wla weshk','5ormk aws3 mn 5orm el ozoon','enta 5awl be ro5sa wla mn 8yer','enta fate7 tezak sabeel','enta shayel rasak we 7atet tezak leh ','omak esmha so3ad','7ot 5yara fe tezak','yabo 5ormen ','7a2a esmk loka loka el sharmota']
@@ -50,109 +52,53 @@ item_name = 'Large tong'
 inventory = get_inventory()
 current_slot = 0
 buy_counter = 0
+path = []
+path_dict = {}
+current_step_index = 0
+walk_flag = False
 
-def dwq():
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x0A',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
+webhook_url = "https://discord.com/api/webhooks/1177991408171356293/2pIFeBZlq08Y_Q2MVdHpyAyTNFtIElX_i3F9SWOaHbSvygIxu6WRUlbq_5Dt2G_hxQU3"
 
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x07',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
 
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x08',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
-
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x09',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
-
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x0B',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
-
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x0C',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
-
-	inject_joymax(0x7045,b'\x2A\x01\x00\x00',False)
-	inject_joymax(0x7046,b'\x2A\x01\x00\x00\x02',False)
-	inject_joymax(0x30D4,b'\x0E',False)
-	inject_joymax(0x30D4,b'\x05',False)
-	inject_joymax(0x30D4,b'\x05',False)
-#devil s
-def kawep():
-	global current_slot
-	# Find the next slot with a "Magic POP Card"
+def walk():
+    global walk_flag
+    global current_step_index
+    walk_flag = True
+    current_step_index = 0  # Start from the first step
+    
+def findd(x, y):
+    global path
+    global path_dict
+    global walk_flag
+    global current_step_index
+    path = generate_path(x, y)
+    path_dict = {index: step for index, step in enumerate(path)}
+    walk_flag = True
+    current_step_index = 0
+def spwanpet():
+	inventory = get_inventory()
 	for slot, item in enumerate(inventory['items']):
-		if slot > current_slot and item and item['name'] == "Magic POP Card":
-			item['slot'] = slot
-			slot_hex = hex(slot)[2:].zfill(2)
-			slot_byte = bytes.fromhex(slot_hex)
-			op = 0x7118
-			if QtBind.isChecked(gui, dwchk):
-				da = b'\xEF\x00\x00\x00\x11\x13\x00\x00'
-				data = da + slot_byte
-				inject_joymax(op, data, False)
-				log(f'Injecting {data.hex()} - Trying on Devil S')
-				current_slot = slot
-				threading.Timer(0.50, kawep).start()
-				break
-			else:
-				log('Magic Pop plugin: Please choose a town first')
-			if QtBind.isChecked(gui, conchk):
-				da = b'\xEF\x00\x00\x00\x11\x13\x00\x00'
-				data = da + slot_byte
-				inject_joymax(op, data, False)
-				log(f'Injecting {data.hex()} - Trying on Devil S')
-				current_slot = slot
-				threading.Timer(0.50, kawep).start()
-				break
-			else:
-				log('Magic Pop plugin: Please choose a town first')
-	else:
-		pass
-#Functions to call the fusing function of each elixir when the button is clicked.
-def on_wep_click():
-	global current_slot
-	for slot, item in enumerate(inventory['items']):
-		if slot > current_slot and item and item['name'] == "Magic POP Card":
-			threading.Timer(0.15, kawep).start()
-			current_slot = slot
-			break
-#mainloop function to support the buying operation.
-def event_loop():
-	global buy_counter
-	global counter
-	if QtBind.isChecked(gui, btn):
-		inv = get_inventory()
-		none_slots = sum(item is None for item in inv['items'])
-		if buy_counter <= none_slots -1:
-			inject_joymax(0x7034, b'\x18\x1B\x04\x02\x00\x0B\x1C\x00\x50\x41\x43\x4B\x41\x47\x45\x5F\x49\x54\x45\x4D\x5F\x4D\x41\x4C\x4C\x5F\x47\x41\x43\x48\x41\x5F\x43\x41\x52\x44\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x37\x02\x00\x00', False)
-			log(f'Buying a card - filled {buy_counter} slot out of {none_slots} so far...')
-			buy_counter += 1
-		else:
-			buy_counter = 0  # Reset the counter back to 0
-			log(f'Filled all of the {none_slots} empty slot(s) - {buy_counter} remaining slots left.')
-			if buy_counter == 0:
-				pass
-
-
+		if item:
+			if item['name'] == 'Battle Elephant Summon Scroll':
+				it = item['name']
+				item['slot'] = slot
+				p = struct.pack('<B', slot)	
+				data = b"\xED\x11"
+				Injectbytes = p+data
+				inject_joymax(0x704C, Injectbytes, False)
 # ______________________________ Methods ______________________________ #
-
+def send_message_to_discord(webhook_url, message):
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    payload = {
+        'content': message
+    }
+    response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
+    if response.status_code == 204:
+        print("Message sent successfully!")
+    else:
+        print(f"Failed to send message. Status code: {response.status_code}")
 # Return xControl folder path
 def getPath():
 	return get_config_dir()+pName+"\\"
@@ -599,42 +545,27 @@ def joined_game():
 
 # All chat messages received are sent to this function
 def handle_chat(t,player,msg):
+	
 	acc_name = get_character_data()['name']
 	# Remove guild name from union chat messages
 	if t == 11:
 		msg = msg.split(': ',1)[1]
 	# Check player at leader list or a Discord message
-	if player and lstLeaders_exist(player) or t == 100:
-		
+	if player and lstLeaders_exist(player) or t == 100 or player == acc_name or player == "Akasha":
+
 		# Parsing message command
 		if msg == 'regtower':
-			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x54\x68\x65\x20\x54\x6F\x77\x65\x72',False)
+			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x74\x68\x65\x20\x54\x6F\x77\x65\x72',False)
 		if msg == 'reglms':
 			inject_joymax(0xC006,b'\x00\x11\x00\x4C\x61\x73\x74\x20\x4D\x61\x6E\x20\x53\x74\x61\x6E\x64\x69\x6E\x67',False)
-		if msg == 'regLS':
-			inject_joymax(0xC006,b'\x00\x0C\x00\x4C\x6F\x74\x74\x65\x72\x79\x20\x53\x69\x6C\x6B',False)
-		if msg == 'regmag':
-			inject_joymax(0xC006,b'\x00\x10\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x4D\x61\x67\x69\x63\x29',False)
+		if msg == 'regmad':
+			inject_joymax(0xC006,b'\x00\x0C\x00\x4D\x61\x64\x6E\x65\x73\x73\x20\x73\x6F\x6C\x6F',False)
 		if msg == 'regsolo':
-			inject_joymax(0xC006,b'\x00\x0F\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x53\x6F\x6C\x6F\x29',False)
-		if msg == 'regmaze':
-			inject_joymax(0xC006,b'\x00\x08\x00\x4D\x61\x7A\x65\x20\x4C\x4D\x53',False)
-		if msg == 'reguniq':
-			inject_joymax(0xC006,b'\x00\x0F\x00\x55\x6E\x69\x71\x75\x65\x20\x4D\x61\x74\x63\x68\x69\x6E\x67',False)
-		if msg == 'regpvp':
-			inject_joymax(0xC006,b'\x00\x0C\x00\x50\x56\x50\x20\x4D\x61\x74\x63\x68\x69\x6E\x67',False)
-		if msg == 'regarena':
-			inject_joymax(0x74D3,b'\x01\x00\x02',False)
-		if msg == 'att':
-			start_bot()
-			log("AkashaHelper Bot started")
+			inject_joymax(0xC006,b'\x00\x0D\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x53\x6F\x6C\x6F',False)
 		elif msg == "stop":
 			stop_bot()
 			stop_trace()
 			log("AkashaHelper Bot stopped")
-		if msg.startswith("trace"):
-			# deletes empty spaces on right
-			msg = msg.rstrip()
 		if msg == "trace":
 			if start_trace(player):
 				log("AkashaHelper Starting trace to ["+player+"]")
@@ -652,6 +583,30 @@ def handle_chat(t,player,msg):
 				msg = msg[1:].split()[0]
 				if start_trace(msg):
 					log("AkashaHelper Starting trace to ["+msg+"]")
+		elif msg == 'job':
+			set_profile('job')
+		elif msg == "reset":
+			set_profile('Default')
+		elif msg == "xx":
+			inject_joymax(0x7074,b'\x01\x04\xDD\x2E\x00\x00\x01\x7B\x76\x02\x00',False)
+		elif msg == "sp1":
+			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/Sp IN.txt')
+			start_bot()
+		elif msg == "sp2":
+			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/Sp OUT.txt')
+			start_bot()
+		elif msg == "hwtq":
+			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/HWT renyx.txt')
+			start_bot()
+		elif msg == "gardenq":
+			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/garden.txt')
+			start_bot()
+		elif msg == "sptp":
+			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/sp out tp stop.txt')
+			start_bot()
+		elif msg == 'help i am alone':
+			player = "Akasha"
+			phBotChat.Private(player,f"i am stuck")
 		elif msg.startswith("TRACE"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
@@ -673,37 +628,73 @@ def handle_chat(t,player,msg):
 				msg = msg[9:].split()[0]
 				if start_trace(msg):
 					log("AkashaHelper Starting trace to ["+msg+"]")
-		elif msg == 'D':
-			inject_joymax(0x70CB,b'\x00\x17\x46\x4A\x00',False)
+		elif msg == "sp":
+			inject_joymax(0x7045, b'\x18\x01\x00\x00', False)
+			inject_joymax(0x704B, b'\x18\x01\x00\x00', False)
+			inject_joymax(0x7046, b'\x18\x01\x00\x00\x0C', False)
+		elif msg == "M?":
+			petss = get_pets()
+			# Check if 'mounted' is True or False in the pet dictionary
+			for pet_info in petss.values():
+				if 'mounted' in pet_info and isinstance(pet_info['mounted'], bool):
+					status = "" if pet_info['mounted'] else "No i am not"
+					phBotChat.All(f"{status}")
+					log(f"Mounted: {status}")
+
+		elif msg.startswith("M"):
+			# default value
+			pet = "transport"
+			if msg != "M":
+				msg = msg[5:].split()
+				if msg:
+					pet = msg[0]
+			# Try mount pet
+			if MountPet(pet):
+				log("Plugin: Mounting pet ["+pet+"]")
+		elif msg.startswith("D"):
+			# default value
+			pet = "transport"
+			if msg != "D":
+				msg = msg[8:].split()
+				if msg:
+					pet = msg[0]
+			# Try dismount pet
+			if DismountPet(pet):
+				log("Plugin: Dismounting pet ["+pet+"]")
+		elif msg.startswith("T"):
+			# deletes empty spaces on right
+			msg = msg.rstrip()
+		if msg == "t":
+			if start_trace(player):
+				log("AkashaHelper Starting trace to ["+player+"]")
+			else:
+				msg = msg[1:].split()[0]
+				if start_trace(msg):
+					log("AkashaHelper Starting trace to ["+msg+"]")
+		elif msg == "N":
+			stop_trace()
+			log("Plugin: Trace stopped")
+		elif msg == 'DS':
+			inject_joymax(0x70CB,b'\00\xCE\x94\x3B\x14', False)
+		elif msg == "prog": #CHECK PROGRESS QUEST NAME
+			quests = get_quests()    
+			for quest_id, quest_data in quests.items():
+				quest_name = quest_data['name']
+				if quest_name == "Hunt 10,000 Sylakenth":
+					quest_prog = quest_data['objectives'][0]['progress']
+					phBotChat.Private(player,f"prog {quest_prog}/10,000")
 		elif msg == "notrace":
 			stop_trace()
 			log("AkashaHelper: Trace stopped")
-		
-		elif msg == 'off':
-			inject_joymax(0x7034,b'\x00\x08\x0D\x00\x00',False)
-		elif msg == 'dp':
-			inject_joymax(0x70C6,b'\xD0\xA9\x25\x00',False)
 		elif msg == "nt":
 			stop_trace()
 			log("AkashaHelper: Trace stopped")
 		elif msg == 'BAG':
 			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\x15\x01\x00\x00',False)
-		elif msg == 'shop':
-			inject_joymax(0x7046,b'\x30\x00\x00\x00\x0C',False)
 		elif msg == 'DW':
 			inject_joymax(0x705A,b'\x04\x00\x00\x00\x02\x02\x00\x00\x00',False)
-		elif msg == 'ALEX':
-			inject_joymax(0x705A,b'\x04\x00\x00\x00\x02\xAF\x00\x00\x00',False)
-		elif msg == 'RECALL':
-			inject_joymax(0x7045,b'\x15\x00\x00\x00',False)
-			inject_joymax(0x7519,b'\x15\x00\x00\x00',False)
-			inject_joymax(0x751A,b'\xC8\x7D\x00\x00',False)
-			inject_joymax(0x751A,b'\xCD\x7D\x00\x00',False)
-			inject_joymax(0x751A,b'\xCF\x7D\x00\x00',False)
-			log('Akasha helper: done recall')
-		elif msg == 'REWARD':
-			inject_joymax(0x7515,b'\x14\x04\x00\x00\x00',False)
-			inject_joymax(0x704B,b'\x6D\x01\x00\x00',False)
+		elif msg == 'rdw':
+			inject_joymax(0x7059,b'\x02\x00\x00\x00',False)
 		elif msg.startswith("GO"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
@@ -717,135 +708,85 @@ def handle_chat(t,player,msg):
 					p = msg[2:].split()
 					x = float(p[0])
 					y = float(p[1])
-					# auto calculated if is not specified
-					region = int(p[2]) if len(p) >= 3 else 0
-					z = float(p[3]) if len(p) >= 4 else 0
-					set_training_position(region,x,y,z)
+					findd(x, y)
 					log("AkashaHelper: Training area set to (X:%.1f,Y:%.1f)"%(x,y))
 				except:
 					log("AkashaHelper: Wrong training area coordinates!")
 			start_bot()
-		elif msg == "dwq":
-			#A Falling star
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#quest lv 60
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x06',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#quest lv 75
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x07',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#quest lv 85
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x08',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x09',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#quest job 101+
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0A',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#quest garden
-			inject_joymax(0x7045,b'\x6D\x01\x00\x00',False)
-			inject_joymax(0x7046,b'\x6D\x01\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0B',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			log('AkashaHelper: done all quests taken or delivered')
-		elif msg == 'supq':
-			#1 job 250
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#2 hunt 10x arabian
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x06',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#3 Devil garden 1
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0A',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#4 Devil garden 2
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0B',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#5 10k mob
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0C',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#6 FGWW
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0D',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			#7 baghdad 
-			inject_joymax(0x7045,b'\x1D\x04\x00\x00',False)
-			inject_joymax(0x7046,b'\x1D\x04\x00\x00\x02',False)
-			inject_joymax(0x30D4,b'\x0E',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			inject_joymax(0x30D4,b'\x05',False)
-			log('AkashaHelper: done all quests taken or delivered')
-		elif msg == 'jt':
-			inject_joymax(0x705A,b'\x01\x00\x00\x00\x02\xAD\x00\x00\x00',False)
-		elif msg == 'locate':
-			# Check current position
-			pos = get_position()
-			phBotChat.Private(player,'mkany (X:%.1f,Y:%.1f,Z:%1f,Region:%d)'%(pos['x'],pos['y'],pos['z'],pos['region']))
+		elif msg == "C": #REVERSE MightyAk47
+			ReverseToCharacter()
+		elif msg == "x": #REVERSE Ak47_Camo
+			ReverseToCharacter3()
+		elif msg == "D":
+			acc_name = get_character_data()['name']
+			if acc_name == "Ak47_Camo":
+				inject_joyman(0x7074, b'\x01\x04\xA8\x79\x00\x00\x00', False)
+				inject_joyman(0x7074, b'\x01\x04\xB0\x79\x00\x00\x00', False)
+			else:
+				inject_joymax(0x7074,b'\x01\x04\xA7\x79\x00\x00\x00', False)
+				inject_joymax(0x7074,b'\x01\x04\xAF\x79\x00\x00\x00', False)
+					
+
+		elif msg == 'buyscroll': #buy 1x dmg scroll
+			inject_joymax(0x7034,b'\x18\x1B\x04\x02\x01\x03\x2B\x00\x50\x41\x43\x4B\x41\x47\x45\x5F\x49\x54\x45\x4D\x5F\x4D\x41\x4C\x4C\x5F\x44\x41\x4D\x41\x47\x45\x5F\x49\x4E\x43\x5F\x32\x30\x50\x5F\x53\x43\x52\x4F\x4C\x4C\x5F\x46\x31\x30\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x6E\x4E\x01\x00', False)
+
+		elif msg == "raa":
+			randomMovement()
+		elif msg == "ra":
+			randomMovement()
+			p = get_position()
+			set_training_position(p['region'], p['x'], p['y'],p['z'])
+			start_bot()
+
+		elif msg == "quest?": #CHECK IF QUEST EXICST
+			quests = get_quests()
+			notices = []
+			for quest_id, quest in quests.items():
+				if quest.get('objectives'):
+					first_objective = quest['objectives'][0]
+					notice = first_objective.get('notice')
+					if notice:
+						notices.append(notice)	
+			if any("Hunt 2000 of any 106 ~ 110 monsters " in notice for notice in notices) \
+					and any("Hunt 5 Holy Water Temple uniques" in notice for notice in notices):
+				phBotChat.Party(f'i have both HWT + MOB ya {player} b7bk <3')
+			elif any("Hunt 2000 of any 106 ~ 110 monsters " in notice for notice in notices):
+				phBotChat.Party(f'i have mob quest only ya {player} b7bk <3')
+			elif any("Hunt 5 Holy Water Temple uniques" in notice for notice in notices):
+				phBotChat.Party(f'i have HWT quest only ya {player} b7bk <3')
+			else:
+				phBotChat.Party(f'I am done with Hwt + Mobs ya {player} b7bk <3')
+		elif msg == "cons":
+			inject_joymax(0x705A,b'\x03\x00\x00\x00\x02\x14\x00\x00\x00', False)
+			
+		elif msg == "dw":
+			inject_joymax(0x705A, b'\x07\x00\x00\x00\x02\x02\x00\x00\x00', False)
+		elif msg == "pet":
+			spwanpet()
+
+		elif msg == "setdw":
+			inject_joymax(0x7059,b'\x03\x00\x00\x00', False)
+
+		elif msg == "job":
+			inject_joymax(0x704C,b'\x0F\xEC\x19\x07\x30\x00\x00\x00',False)
+		elif msg == "jobin":
+			inject_joymax(0x705A,b'\03\x00\x00\x00\x02\xAD\x00\x00\x00',False)
+			if msg.lower() == "locate":
+				x = int(get_position()['x'])
+				y = int(get_position()['y'])
+				reg = get_position()['region']
+				area = get_zone_name(reg)
+			phBotChat.Private(player,f"Iam at {area} > X: {x} , Y: {y}")
 		elif msg.startswith("HWT2"):
 			inject_teleport("Kings Valley","Pharaoh tomb (intermediate)")
 		elif msg.startswith("HWT1"):
 			inject_teleport("Kings Valley","Pharaoh tomb (beginner)")
 		elif msg.startswith("Q1"):
-			inject_teleport("Harbor Manager Marwa","Pirate Morgun") or inject_teleport("Pirate Morgun","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Pirate Morgun") or inject_teleport("Priate Blackbeard","Harbor Manager Gale") or inject_teleport("Aircraft Ticket Seller Shard","Aircraft Ticket Seller Sangnia") or inject_teleport("Aircraft Ticket Seller Sangnia","Aircraft Ticket Seller Shard") or inject_teleport("Tunnel Manager Salhap","Tunnel Manager Maryokuk") or inject_teleport("Tunnel Manager Maryokuk","Tunnel Manager Salhap") or inject_teleport("Tunnel Manager Topni","Tunnel Manager Asui") or inject_teleport("Tunnel Manager Asui","Tunnel Manager Topni") or inject_teleport("Aircraft Ticket Seller Saena","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Ajati") or inject_teleport("Boat Ticket Seller Rahan","Boat Ticket Seller Salmai") or inject_teleport("Boat Ticket Seller Salmai","Boat Ticket Seller Rahan") or inject_teleport("Boat Ticket Seller Asimo","Boat Ticket Seller Asa") or inject_teleport("Boat Ticket Seller Asa","Boat Ticket Seller Asimo") or inject_teleport("Ferry Ticket Seller Tayun","Ferry Ticket Seller Doji") or inject_teleport("Ferry Ticket Seller Doji","Ferry Ticket Seller Tayun") or inject_teleport("Ferry Ticket Seller Hageuk","Ferry Ticket Seller Chau") or inject_teleport("Boat Ticket Seller Rahan","Ferry Ticket Seller Chau") or inject_teleport("Ferry Ticket Seller Chau","Boat Ticket Seller Rahan") or inject_teleport("Ferry Ticket Seller Chau","Ferry Ticket Seller Hageuk") or inject_teleport("forbidden plain","Kings Valley") or inject_teleport("Kings Valley","forbidden plain") or inject_teleport("abundance ground","Storm and cloud Desert") or inject_teleport("Storm and cloud Desert","abundance ground")
+			inject_teleport("Harbor Manager Marwa","Pirate Morgun") or inject_teleport ("Outside-Togui","Inside-Togui") or inject_teleport ("Inside-Togui","Outside-Togui") or inject_teleport("Pirate Morgun","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Pirate Morgun") or inject_teleport("Priate Blackbeard","Harbor Manager Gale") or inject_teleport("Aircraft Ticket Seller Shard","Aircraft Ticket Seller Sangnia") or inject_teleport("Aircraft Ticket Seller Sangnia","Aircraft Ticket Seller Shard") or inject_teleport("Tunnel Manager Salhap","Tunnel Manager Maryokuk") or inject_teleport("Tunnel Manager Maryokuk","Tunnel Manager Salhap") or inject_teleport("Tunnel Manager Topni","Tunnel Manager Asui") or inject_teleport("Tunnel Manager Asui","Tunnel Manager Topni") or inject_teleport("Aircraft Ticket Seller Saena","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Ajati") or inject_teleport("Boat Ticket Seller Rahan","Boat Ticket Seller Salmai") or inject_teleport("Boat Ticket Seller Salmai","Boat Ticket Seller Rahan") or inject_teleport("Boat Ticket Seller Asimo","Boat Ticket Seller Asa") or inject_teleport("Boat Ticket Seller Asa","Boat Ticket Seller Asimo") or inject_teleport("Ferry Ticket Seller Tayun","Ferry Ticket Seller Doji") or inject_teleport("Ferry Ticket Seller Doji","Ferry Ticket Seller Tayun") or inject_teleport("Ferry Ticket Seller Hageuk","Ferry Ticket Seller Chau") or inject_teleport("Boat Ticket Seller Rahan","Ferry Ticket Seller Chau") or inject_teleport("Ferry Ticket Seller Chau","Boat Ticket Seller Rahan") or inject_teleport("Ferry Ticket Seller Chau","Ferry Ticket Seller Hageuk") or inject_teleport("forbidden plain","Kings Valley") or inject_teleport("Kings Valley","forbidden plain") or inject_teleport("abundance ground","Storm and cloud Desert") or inject_teleport("Storm and cloud Desert","abundance ground")
 		elif msg.startswith("Q2"):
 			inject_teleport("Harbor Manager Marwa","Priate Blackbeard") or inject_teleport("Harbor Manager Gale","Priate Blackbeard") or inject_teleport("Pirate Morgun","Harbor Manager Marwa") or inject_teleport("Priate Blackbeard","Harbor Manager Marwa") or inject_teleport("Aircraft Ticket Seller Saena","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Poy") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Poy")
 		elif msg.startswith("Q3"):
 			inject_teleport("Harbor Manager Marwa","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Harbor Manager Marwa") or inject_teleport("Aircraft Ticket Seller Ajati","Aircraft Ticket Seller Saena") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Saena")
-		elif msg == 'JGDW':
-			inject_joymax(0x705A,b'\x07\x00\x00\x00\x02\x02\x00\x00\x00',False)
-		elif msg == 'AC':
-			inject_joymax(0x705A,b'\x03\x00\x00\x00\x02\xE2\x00\x00\x00',False)
-		elif msg == 'out':
-			inject_joymax(0x751D,b'\x13\x00\x00\x00',False)
-
-		elif msg == 'r1':
-			inject_joymax(0x7046,b'\x2D\x00\x00\x00\x0C',True)
-
-		elif msg == 'r2':
-			inject_joymax(0x7046,b'\x30\x00\x00\x00\x0C',True)
-		
-
-		elif msg == 'tr':
-			inject_joymax(0x705A,b'\x01\x00\x00\x00\x02\xF0\x00\x00\x00',True)
-
-
 		elif msg.startswith("SETR"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
@@ -878,7 +819,7 @@ def handle_chat(t,player,msg):
 		elif msg == "ZERK":
 			log("AkashaHelper: Using Berserker mode")
 			inject_joymax(0x70A7,b'\x01',False)
-		elif msg == "RETURN":
+		elif msg == "R":
 			# Quickly check if is dead
 			character = get_character_data()
 			if character['hp'] == 0:
@@ -931,6 +872,12 @@ def handle_chat(t,player,msg):
 		elif msg == 'fare2':
 			random_string = random.choice(bakborta)
 			phBotChat.All(f'{str(random_string)}')
+		elif msg == "OU":
+			# Check if has party
+			if get_party():
+				# Left it
+				log("AkashaHelper: Leaving the party..")
+				inject_joymax(0x7061,b'',False)
 		elif msg == "leave":
 			# Check if has party
 			if get_party():
@@ -945,6 +892,7 @@ def handle_chat(t,player,msg):
 			items = get_inventory()['items']
 			if items != []:
 				for item in items:
+					sort_inventory()
 					if item != None and "Large" in item['name'] and "tong" in item['name']:
 						msg = f"largetong = {item['quantity']}"
 						phBotChat.Private(player,msg)
@@ -966,9 +914,62 @@ def handle_chat(t,player,msg):
 					if item != None and "Commander's patch" in item['name']:
 						msg7 = f"Commander's Patch = {item['quantity']}"
 						phBotChat.Private(player,msg7)
-					if item != None and "Serencess's" in item['name']:
-						msg8 = f"Serencess = {item['quantity']}"
+					if item != None and "Sereness's tears" in item['name']:
+						msg8 = f"Sereness = {item['quantity']}"
 						phBotChat.Private(player,msg8)
+					if item != None and "Sedon" in item['name']:
+						msg11 = f"i have egy chin = {item['quantity']}"
+						phBotChat.Private(player,msg11)
+					if item != None and "Bratoom" in item ['name']:
+						msg12 = f" i have egy eu shield"
+						phBotChat.Private(player,msg12)
+		elif msg == 'check':
+			items = get_inventory()['items']
+			if items != []:
+				for item in items:
+					sort_inventory()
+					if item != None and "Magic stone of immortal(Lvl.11) (Untrade)" in item['name']:
+						msg9 = f"untradable immo = {item['quantity']}"
+						phBotChat.Private(player,msg9)
+					if item != None and "Magic stone of immortal(Lvl.11)" in item['name']:
+						msg10 = f"immo stones = {item['quantity']}"
+						phBotChat.Private(player,msg10)
+					if item != None and "Silk Scroll (25)" in item['name']:
+						msg22 = f"silk = {item['quantity']}"
+						phBotChat.Private(player,msg22)
+		elif msg == "sox":
+			inv = get_inventory()['items']
+			for item in inv:
+				if item is not None:
+					serv_name = item['servername']
+					if "A_RARE" in serv_name and "11" in serv_name:
+						name = item['name']
+						phBotChat.Private(player,name)
+						log(f"{name}")
+
+		elif msg == 'log':
+			inv = get_inventory()['items']
+			log(f"{inv}")
+
+
+
+
+
+
+		elif msg == 'coins':
+			items = get_inventory()['items']
+			if items != []:
+				for item in items:
+					sort_inventory()
+					if item != None and "Gold Coin" in item ['name']:
+						msg18 = f"Gold Coins = {item['quantity']}"
+						phBotChat.Private(player,msg18)
+					if item != None and "Silver Coin" in item ['name']:
+						msg19 = f"Silver Coins = {item['quantity']}"
+						phBotChat.Private(player,msg19)
+					if item != None and "Arena Coin" in item ['name']:
+						msg20 = f"Arena Coins = {item['quantity']}"
+						phBotChat.Private(player,msg20)
 		elif msg.startswith("g:"):
 			message = msg[2:].strip()
 			if message:
@@ -976,6 +977,8 @@ def handle_chat(t,player,msg):
 		elif msg == "mob":
 			monsters = get_monsters()
 			log(f'{monsters}')
+		elif msg == "sort":
+			sort_inventory()
 		elif msg.startswith("D"):
 			# default value
 			pet = "horse"
@@ -993,21 +996,6 @@ def handle_chat(t,player,msg):
 				if npcUID > 0:
 					log("AkashaHelper: Designating recall to \""+msg.title()+"\"...")
 					inject_joymax(0x7059, struct.pack('I',npcUID), False)
-		if msg.startswith("EQUIP "):
-			msg = msg[6:]
-			if msg:
-				# search item with similar name or exact server name
-				item = GetItemByExpression(lambda n,s: msg in n or msg == s,13)
-				if item:
-					EquipItem(item)
-		
-		if msg.startswith("UNEQUIP "):
-			msg = msg[8:]
-			if msg:
-				# search item with similar name or exact server name
-				item = GetItemByExpression(lambda n,s: msg in n or msg == s,0,12)
-				if item:
-					UnequipItem(item)
 		if msg.startswith("R "):
 			# remove command
 			msg = msg[2:]
@@ -1056,7 +1044,6 @@ def handle_chat(t,player,msg):
 				last_word = words[-1]
 				random_string = random.choice(shtema)
 				phBotChat.All(f'{str(random_string)} ya {last_word} ')
-
 # Called every 500ms
 def event_loop():
 	if inGame and followActivated:
@@ -1195,6 +1182,11 @@ def btnUpdate_clicked():
 
 
 
+
+
+
+
+				
 
 # Plugin loaded
 log("AkashaHelper: "+pName+" v"+pVersion+" successfully loaded")
