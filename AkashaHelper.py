@@ -13,8 +13,8 @@ import re
 import shutil
 import requests
 pName = 'AkashaHelper'
-pVersion = '2.91'
-pUrl = 'https://github.com/Desha11s/Phbot/edit/main/AkashaHelper.py'
+pVersion = '2.7'
+pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
 
@@ -59,7 +59,28 @@ walk_flag = False
 
 webhook_url = "https://discord.com/api/webhooks/1177991408171356293/2pIFeBZlq08Y_Q2MVdHpyAyTNFtIElX_i3F9SWOaHbSvygIxu6WRUlbq_5Dt2G_hxQU3"
 
-
+def usescroll():
+	inventory = get_inventory()
+	for slot, item in enumerate(inventory['items']):
+		if item:
+			if item['name'] == '20% damage increase scroll':
+				it = item['name']
+				item['slot'] = slot
+				p = struct.pack('<B', slot)	
+				data = b"\x23\xED"
+				Injectbytes = data+p
+				inject_joymax(0x704C, Injectbytes, False)
+def ReverseToCharacter():
+	inventory = get_inventory()
+	for slot, item in enumerate(inventory['items']):
+		if item:
+			if item['name'] == 'Reverse Return Scroll (Special)':
+				it = item['name']
+				item['slot'] = slot
+				p = struct.pack('<B', slot)	
+				data = b"\x06\x00\x41\x6B\x61\x73\x6B\x61\x20"
+				Injectbytes = data+p
+				inject_joymax(0xA459, Injectbytes, False)
 def walk():
     global walk_flag
     global current_step_index
@@ -713,6 +734,8 @@ def handle_chat(t,player,msg):
 				except:
 					log("AkashaHelper: Wrong training area coordinates!")
 			start_bot()
+		elif msg == "scroll":
+			usescroll()
 		elif msg == "C": #REVERSE MightyAk47
 			ReverseToCharacter()
 		elif msg == "x": #REVERSE Ak47_Camo
@@ -763,7 +786,14 @@ def handle_chat(t,player,msg):
 			inject_joymax(0x705A, b'\x07\x00\x00\x00\x02\x02\x00\x00\x00', False)
 		elif msg == "pet":
 			spwanpet()
-
+		elif msg == "gate1":
+			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF4\x00\x00\x00',False)
+		elif msg == "gate2":
+			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF5\x00\x00\x00',False)
+		elif msg == "gate3":
+			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xFB\x00\x00\x00',False)
+		elif msg == "gate4":
+			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF3\x00\x00\x00',False)
 		elif msg == "setdw":
 			inject_joymax(0x7059,b'\x03\x00\x00\x00', False)
 
