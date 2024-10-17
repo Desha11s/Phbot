@@ -13,7 +13,7 @@ import re
 import shutil
 import requests
 pName = 'AkashaHelper'
-pVersion = '3.0'
+pVersion = '3.1'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -63,7 +63,7 @@ def usescroll():
 	inventory = get_inventory()
 	for slot, item in enumerate(inventory['items']):
 		if item:
-			if item['name'] == '20% damage increase scroll':
+			if item['name'] == '10% damage increase scroll':
 				it = item['name']
 				item['slot'] = slot
 				p = struct.pack('<B', slot)	
@@ -74,7 +74,7 @@ def ReverseToCharacter():
 	inventory = get_inventory()
 	for slot, item in enumerate(inventory['items']):
 		if item:
-			if item['name'] == 'Reverse Return Scroll (Special)':
+			if item['name'] == 'Special Reverse Return Scroll':
 				it = item['name']
 				item['slot'] = slot
 				p = struct.pack('<B', slot)	
