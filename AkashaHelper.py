@@ -13,7 +13,7 @@ import re
 import shutil
 import requests
 pName = 'AkashaHelper'
-pVersion = '2.7'
+pVersion = '3.0'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
