@@ -13,7 +13,7 @@ import re
 import shutil
 import requests
 pName = 'AkashaHelper'
-pVersion = '3.1'
+pVersion = '3.2'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -78,7 +78,7 @@ def ReverseToCharacter():
 				it = item['name']
 				item['slot'] = slot
 				p = struct.pack('<B', slot)	
-				data = b"\x06\x00\x41\x6B\x61\x73\x6B\x61\x20"
+				data = b"\x06\x00\x41\x6B\x61\x73\x6B\x61"
 				Injectbytes = data+p
 				inject_joymax(0xA459, Injectbytes, False)
 def walk():
