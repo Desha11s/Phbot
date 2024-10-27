@@ -11,7 +11,6 @@ import sqlite3
 import urllib.request
 import re
 import shutil
-import requests
 pName = 'AkashaHelper'
 pVersion = '3.4'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
