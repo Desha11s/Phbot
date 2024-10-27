@@ -13,7 +13,7 @@ import re
 import shutil
 import requests
 pName = 'AkashaHelper'
-pVersion = '3.3'
+pVersion = '3.4'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -27,8 +27,7 @@ followDistance = 0
 # Graphic user interface
 gui = QtBind.init(__name__,pName)
 largetong = 0
-QtBind.createLabel(gui,'Created by Akasha for Cerberus Online',525,10)
-QtBind.createLabel(gui,'Created by Akasha for Sargon Online',525,10)
+QtBind.createLabel(gui,'Created by Akasha for Neon Online',525,10)
 QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',545,260)
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- GO : starts bot at current location\n- stop : stops bot and trace\n- trace or t or cmd trace :starts trace\n- nt : Stop trace\n- R : back to town or wake up\n- GO + X Y --> will go to these coords\n- locate : tells you the coords and region\n- rm : makes random movement\n- HWT1 : teleports to HWT beginner\n- HWT2 teleports to HWT Intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point\n- gold : tells you how much gold you have\n- sort : sort your inventory ',10,70)
@@ -37,11 +36,9 @@ btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
 btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Update  ",300,8)
-#btn = QtBind.createCheckBox(gui, 'CbxDoNothing', 'Buy', 210, 30)
 dwchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Donwhang', 10, 10 )
 conchk = QtBind.createCheckBox(gui, 'CBXDoNothing', 'Constantinpole', 100, 10 )
 btnwep = QtBind.createButton(gui, 'ReverseToCharacter', 'Lucky Hit (Devil S)', 200, 8)
-#btnwep = QtBind.createButton(gui, 'dwq', 'DW QUEST', 10, 90)
 bakborta = ['fare2 el bkbortatttttttttt','ba ka bo rtaaaaaaa']
 shtema = ['enta 5awl ','adek tzmr ','anekk t2ol ahhhh ','adek tf7r ','kosomak ','tezak de wla weshk','5ormk aws3 mn 5orm el ozoon','enta 5awl be ro5sa wla mn 8yer','enta fate7 tezak sabeel','enta shayel rasak we 7atet tezak leh ','omak esmha so3ad','7ot 5yara fe tezak','yabo 5ormen ','7a2a esmk loka loka el sharmota']
 tbxLeaders = QtBind.createLineEdit(gui,"",525,30,110,20)
@@ -57,7 +54,6 @@ path_dict = {}
 current_step_index = 0
 walk_flag = False
 
-webhook_url = "https://discord.com/api/webhooks/1177991408171356293/2pIFeBZlq08Y_Q2MVdHpyAyTNFtIElX_i3F9SWOaHbSvygIxu6WRUlbq_5Dt2G_hxQU3"
 
 def usescroll():
 	inventory = get_inventory()
@@ -70,17 +66,7 @@ def usescroll():
 				data = b"\x23\xED"
 				Injectbytes = data+p
 				inject_joymax(0x704C, Injectbytes, False)
-def ReverseToCharacter():
-	inventory = get_inventory()
-	for slot, item in enumerate(inventory['items']):
-		if item:
-			if item['name'] == 'Special Reverse Return Scroll':
-				it = item['name']
-				item['slot'] = slot
-				p = struct.pack('<B', slot)	
-				data = b"\x06\x00\x41\x6B\x61\x73\x68\x61"
-				Injectbytes = data+p
-				inject_joymax(0xA459, Injectbytes, False)
+
 def walk():
     global walk_flag
     global current_step_index
@@ -107,19 +93,7 @@ def spwanpet():
 				data = b"\xED\x11"
 				Injectbytes = p+data
 				inject_joymax(0x704C, Injectbytes, False)
-# ______________________________ Methods ______________________________ #
-def send_message_to_discord(webhook_url, message):
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    payload = {
-        'content': message
-    }
-    response = requests.post(webhook_url, headers=headers, data=json.dumps(payload))
-    if response.status_code == 204:
-        print("Message sent successfully!")
-    else:
-        print(f"Failed to send message. Status code: {response.status_code}")
+
 # Return xControl folder path
 def getPath():
 	return get_config_dir()+pName+"\\"
@@ -175,7 +149,8 @@ def btnAddLeader_clicked():
 				f.write(json.dumps(data, indent=4, sort_keys=True))
 			QtBind.append(gui,lstLeaders,player)
 			QtBind.setText(gui, tbxLeaders,"")
-			log('AkashaHelper Leader added ['+player+']')
+			log('AkashaHelper: Leader added ['+player+']')
+			phBotChat.ClientNotice('AkashaHelper: Leader added ['+player+']')
 
 # Remove leader selected from list
 def btnRemLeader_clicked():
@@ -194,7 +169,8 @@ def btnRemLeader_clicked():
 				except:
 					pass # just ignore file if doesn't exist
 			QtBind.remove(gui,lstLeaders,selectedItem)
-			log('AkashaHelper Leader removed ['+selectedItem+']')
+			log('AkashaHelper: Leader removed ['+selectedItem+']')
+			phBotChat.ClientNotice('AkashaHelper: Leader removed ['+selectedItem+']')
 
 # Return True if nickname exist at the leader list
 def lstLeaders_exist(nickname):
@@ -212,16 +188,17 @@ def inject_teleport(source,destination):
 		npcs = get_npcs()
 		for key, npc in npcs.items():
 			if npc['name'] == source or npc['servername'] == source:
-				log("AkashaHelper Selecting teleporter ["+source+"]")
+				log("AkashaHelper: Selecting teleporter ["+source+"]")
+				phBotChat.ClientNotice("AkashaHelper: Selecting teleporter ["+source+"]")
 				# Teleport found, select it
 				inject_joymax(0x7045, struct.pack('<I', key), False)
 				# Start a timer to teleport in 2.0 seconds
 				Timer(2.0, inject_joymax, (0x705A,struct.pack('<IBI', key, 2, t[1]),False)).start()
 				Timer(2.0, log, ("Plugin: Teleporting to ["+destination+"]")).start()
 				return
-		log('AkashaHelper NPC not found. Wrong NPC name or servername')
-	else:
-		log('AkashaHelper Teleport data not found. Wrong teleport name or servername')
+		#log('AkashaHelper: NPC not found. Wrong NPC name or servername')		
+	#else:
+		#log('AkashaHelper: Teleport data not found. Wrong teleport name or servername')
 
 # Send message, Ex. "All Hello World!" or "private JellyBitz Hi!"
 def handleChatCommand(msg):
@@ -258,7 +235,7 @@ def handleChatCommand(msg):
 	elif t == "global":
 		sent = phBotChat.Global(args[1])
 	if sent:
-		log('AkashaHelper Message "'+t+'" sent successfully!')
+		log('AkashaHelper: Message "'+t+'" sent successfully!')
 
 # Move to a random position from the actual position using a maximum radius
 def randomMovement(radiusMax=10):
@@ -271,7 +248,7 @@ def randomMovement(radiusMax=10):
 	pY = pY + p["y"]
 	# Moving to new position
 	move_to(pX,pY,p["z"])
-	log("AkashaHelper Random movement to (X:%.1f,Y:%.1f)"%(pX,pY))
+	log("AkashaHelper: Random movement to (X:%.1f,Y:%.1f)"%(pX,pY))
 
 # Follow a player using distance. Return success
 def start_follow(player,distance):
@@ -322,7 +299,7 @@ def MountHorse():
 	if item:
 		UseItem(item)
 		return True
-	log('AkashaHelper Horse not found at your inventory')
+	log('AkashaHelper: Horse not found at your inventory')
 	return False
 
 # Try to mount pet by type, return success
@@ -404,7 +381,7 @@ def Inject_InventoryMovement(movementType,slotInitial,slotFinal,logItemName,quan
 	p += struct.pack('<B',slotInitial)
 	p += struct.pack('<B',slotFinal)
 	p += struct.pack('<H',quantity)
-	log('AkashaHelper Moving item "'+logItemName+'"...')
+	log('AkashaHelper: Moving item "'+logItemName+'"...')
 	# CLIENT_INVENTORY_ITEM_MOVEMENT
 	inject_joymax(0x7034,p,False)
 
@@ -413,7 +390,7 @@ def EquipItem(item):
 	itemData = get_item(item['model'])
 	# Check equipables only
 	if itemData['tid1'] != 1:
-		log('AkashaHelper '+item['name']+' cannot be equiped!')
+		log('AkashaHelper: '+item['name']+' cannot be equiped!')
 		return
 	# Check equipable type
 	t = itemData['tid2']
@@ -563,6 +540,7 @@ def connected():
 # Called when the character enters the game world
 def joined_game():
 	loadConfigs()
+	
 
 # All chat messages received are sent to this function
 def handle_chat(t,player,msg):
@@ -586,73 +564,85 @@ def handle_chat(t,player,msg):
 		elif msg == "stop":
 			stop_bot()
 			stop_trace()
-			log("AkashaHelper Bot stopped")
-		if msg == "trace":
-			if start_trace(player):
-				log("AkashaHelper Starting trace to ["+player+"]")
-			else:
-				msg = msg[5:].split()[0]
-				if start_trace(msg):
-					log("AkashaHelper Starting trace to ["+msg+"]")
-		elif msg.startswith("t"):
-			# deletes empty spaces on right
+			log("AkashaHelper: Bot stopped")
+			phBotChat.ClientNotice("AkashaHelper: Bot stopped")
+		elif msg == 'start':
+			start_bot()
+			phBotChat.ClientNotice("AkashaHelper: Bot started")
+
+
+
+####################################        TRACE       ###########################################
+
+		elif msg.startswith("trace"):
+			# deletes empty spaces on the right
 			msg = msg.rstrip()
-		if msg == "t":
-			if start_trace(player):
-				log("AkashaHelper Starting trace to ["+player+"]")
+			if msg == "trace":
+				if start_trace(player):
+					log("AkashaHelper: Starting trace to [" + player + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + player + "]")
 			else:
-				msg = msg[1:].split()[0]
+				msg = msg[6:].split()[0]  # Adjusted to remove "t " instead of "TRACE "
 				if start_trace(msg):
-					log("AkashaHelper Starting trace to ["+msg+"]")
-		elif msg == 'job':
-			set_profile('job')
-		elif msg == "reset":
-			set_profile('Default')
-		elif msg == "xx":
-			inject_joymax(0x7074,b'\x01\x04\xDD\x2E\x00\x00\x01\x7B\x76\x02\x00',False)
-		elif msg == "sp1":
-			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/Sp IN.txt')
-			start_bot()
-		elif msg == "sp2":
-			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/Sp OUT.txt')
-			start_bot()
-		elif msg == "hwtq":
-			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/HWT renyx.txt')
-			start_bot()
-		elif msg == "gardenq":
-			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/garden.txt')
-			start_bot()
-		elif msg == "sptp":
-			set_training_script('C:/Users/yyybo/Desktop/Renyx bot/sp out tp stop.txt')
-			start_bot()
-		elif msg == 'help i am alone':
-			player = "Akasha"
-			phBotChat.Private(player,f"i am stuck")
+					log("AkashaHelper: Starting trace to [" + msg + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + msg + "]")
+##################################################################################################
+
+		elif msg.startswith("t"):
+			# deletes empty spaces on the right
+			msg = msg.rstrip()
+			if msg == "t":
+				if start_trace(player):
+					log("AkashaHelper: Starting trace to [" + player + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + player + "]")
+			else:
+				msg = msg[2:].split()[0]  # Adjusted to remove "t " instead of "TRACE "
+				if start_trace(msg):
+					log("AkashaHelper: Starting trace to [" + msg + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + msg + "]")
+##################################################################################################
+
 		elif msg.startswith("TRACE"):
 			# deletes empty spaces on right
 			msg = msg.rstrip()
 			if msg == "TRACE":
 				if start_trace(player):
-					log("AkashaHelper Starting trace to ["+player+"]")
+					log("AkashaHelper: Starting trace to ["+player+"]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to ["+player+"]")
 			else:
 				msg = msg[5:].split()[0]
 				if start_trace(msg):
-					log("AkashaHelper Starting trace to ["+msg+"]")
+					log("AkashaHelper: Starting trace to ["+msg+"]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to ["+msg+"]")
+##################################################################################################
+
 		elif msg.startswith("cmd trace"):
-			inject_joymax(0x70CB,b'\x00\x17\x46\x4A\x00',False)
 			# deletes empty spaces on right
 			msg = msg.rstrip()
 			if msg == "cmd trace":
 				if start_trace(player):
-					log("AkashaHelper Starting trace to ["+player+"]")
+					log("AkashaHelper: Starting trace to ["+player+"]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to ["+player+"]")
 			else:
-				msg = msg[9:].split()[0]
+				msg = msg[10:].split()[0]
 				if start_trace(msg):
-					log("AkashaHelper Starting trace to ["+msg+"]")
-		elif msg == "sp":
-			inject_joymax(0x7045, b'\x18\x01\x00\x00', False)
-			inject_joymax(0x704B, b'\x18\x01\x00\x00', False)
-			inject_joymax(0x7046, b'\x18\x01\x00\x00\x0C', False)
+					log("AkashaHelper: Starting trace to ["+msg+"]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to ["+msg+"]")
+##################################################################################################
+		elif msg.startswith("T"):
+			# deletes empty spaces on the right
+			msg = msg.rstrip()
+			if msg == "T":
+				if start_trace(player):
+					log("AkashaHelper: Starting trace to [" + player + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + player + "]")
+			else:
+				msg = msg[2:].split()[0]  # Adjusted to remove "t " instead of "TRACE "
+				if start_trace(msg):
+					log("AkashaHelper: Starting trace to [" + msg + "]")
+					phBotChat.ClientNotice("AkashaHelper: Starting trace to [" + msg + "]")
+##################################################################################################
+
 		elif msg == "M?":
 			petss = get_pets()
 			# Check if 'mounted' is True or False in the pet dictionary
@@ -661,6 +651,7 @@ def handle_chat(t,player,msg):
 					status = "" if pet_info['mounted'] else "No i am not"
 					phBotChat.All(f"{status}")
 					log(f"Mounted: {status}")
+					phBotChat.ClientNotice(f"Mounted: {status}")
 
 		elif msg.startswith("M"):
 			# default value
@@ -672,6 +663,7 @@ def handle_chat(t,player,msg):
 			# Try mount pet
 			if MountPet(pet):
 				log("Plugin: Mounting pet ["+pet+"]")
+				phBotChat.ClientNotice("Plugin: Mounting pet ["+pet+"]")
 		elif msg.startswith("D"):
 			# default value
 			pet = "transport"
@@ -682,19 +674,12 @@ def handle_chat(t,player,msg):
 			# Try dismount pet
 			if DismountPet(pet):
 				log("Plugin: Dismounting pet ["+pet+"]")
-		elif msg.startswith("T"):
-			# deletes empty spaces on right
-			msg = msg.rstrip()
-		if msg == "t":
-			if start_trace(player):
-				log("AkashaHelper Starting trace to ["+player+"]")
-			else:
-				msg = msg[1:].split()[0]
-				if start_trace(msg):
-					log("AkashaHelper Starting trace to ["+msg+"]")
+				phBotChat.ClientNotice("Plugin: Dismounting pet ["+pet+"]")
+
 		elif msg == "N":
 			stop_trace()
 			log("Plugin: Trace stopped")
+			phBotChat.ClientNotice("AkashaHelper: Trace stopped")
 		elif msg == 'DS':
 			inject_joymax(0x70CB,b'\00\xCE\x94\x3B\x14', False)
 		elif msg == "prog": #CHECK PROGRESS QUEST NAME
@@ -707,13 +692,14 @@ def handle_chat(t,player,msg):
 		elif msg == "notrace":
 			stop_trace()
 			log("AkashaHelper: Trace stopped")
+			phBotChat.ClientNotice("AkashaHelper: Trace stopped")
 		elif msg == "nt":
 			stop_trace()
 			log("AkashaHelper: Trace stopped")
+			phBotChat.ClientNotice("AkashaHelper: Trace stopped")
 		elif msg == 'BAG':
 			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\x15\x01\x00\x00',False)
-		elif msg == 'DW':
-			inject_joymax(0x705A,b'\x04\x00\x00\x00\x02\x02\x00\x00\x00',False)
+
 		elif msg == 'rdw':
 			inject_joymax(0x7059,b'\x02\x00\x00\x00',False)
 		elif msg.startswith("GO"):
@@ -729,29 +715,17 @@ def handle_chat(t,player,msg):
 					p = msg[2:].split()
 					x = float(p[0])
 					y = float(p[1])
-					findd(x, y)
+					# auto calculated if is not specified
+					region = int(p[2]) if len(p) >= 3 else 0
+					z = float(p[3]) if len(p) >= 4 else 0
+					set_training_position(region,x,y,z)
 					log("AkashaHelper: Training area set to (X:%.1f,Y:%.1f)"%(x,y))
+					phBotChat.ClientNotice("AkashaHelper: Training area set to (X:%.1f,Y:%.1f)"%(x,y))
 				except:
 					log("AkashaHelper: Wrong training area coordinates!")
+					phBotChat.ClientNotice("AkashaHelper: Wrong training area coordinates!")
 			start_bot()
-		elif msg == "scroll":
-			usescroll()
-		elif msg == "C": #REVERSE MightyAk47
-			ReverseToCharacter()
-		elif msg == "x": #REVERSE Ak47_Camo
-			ReverseToCharacter3()
-		elif msg == "D":
-			acc_name = get_character_data()['name']
-			if acc_name == "Ak47_Camo":
-				inject_joyman(0x7074, b'\x01\x04\xA8\x79\x00\x00\x00', False)
-				inject_joyman(0x7074, b'\x01\x04\xB0\x79\x00\x00\x00', False)
-			else:
-				inject_joymax(0x7074,b'\x01\x04\xA7\x79\x00\x00\x00', False)
-				inject_joymax(0x7074,b'\x01\x04\xAF\x79\x00\x00\x00', False)
 					
-
-		elif msg == 'buyscroll': #buy 1x dmg scroll
-			inject_joymax(0x7034,b'\x18\x1B\x04\x02\x01\x03\x2B\x00\x50\x41\x43\x4B\x41\x47\x45\x5F\x49\x54\x45\x4D\x5F\x4D\x41\x4C\x4C\x5F\x44\x41\x4D\x41\x47\x45\x5F\x49\x4E\x43\x5F\x32\x30\x50\x5F\x53\x43\x52\x4F\x4C\x4C\x5F\x46\x31\x30\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x6E\x4E\x01\x00', False)
 
 		elif msg == "raa":
 			randomMovement()
@@ -761,41 +735,7 @@ def handle_chat(t,player,msg):
 			set_training_position(p['region'], p['x'], p['y'],p['z'])
 			start_bot()
 
-		elif msg == "quest?": #CHECK IF QUEST EXICST
-			quests = get_quests()
-			notices = []
-			for quest_id, quest in quests.items():
-				if quest.get('objectives'):
-					first_objective = quest['objectives'][0]
-					notice = first_objective.get('notice')
-					if notice:
-						notices.append(notice)	
-			if any("Hunt 2000 of any 106 ~ 110 monsters " in notice for notice in notices) \
-					and any("Hunt 5 Holy Water Temple uniques" in notice for notice in notices):
-				phBotChat.Party(f'i have both HWT + MOB ya {player} b7bk <3')
-			elif any("Hunt 2000 of any 106 ~ 110 monsters " in notice for notice in notices):
-				phBotChat.Party(f'i have mob quest only ya {player} b7bk <3')
-			elif any("Hunt 5 Holy Water Temple uniques" in notice for notice in notices):
-				phBotChat.Party(f'i have HWT quest only ya {player} b7bk <3')
-			else:
-				phBotChat.Party(f'I am done with Hwt + Mobs ya {player} b7bk <3')
-		elif msg == "cons":
-			inject_joymax(0x705A,b'\x03\x00\x00\x00\x02\x14\x00\x00\x00', False)
-			
-		elif msg == "dw":
-			inject_joymax(0x705A, b'\x07\x00\x00\x00\x02\x02\x00\x00\x00', False)
-		elif msg == "pet":
-			spwanpet()
-		elif msg == "gate1":
-			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF4\x00\x00\x00',False)
-		elif msg == "gate2":
-			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF5\x00\x00\x00',False)
-		elif msg == "gate3":
-			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xFB\x00\x00\x00',False)
-		elif msg == "gate4":
-			inject_joymax(0x705A,b'\x02\x00\x00\x00\x02\xF3\x00\x00\x00',False)
-		elif msg == "setdw":
-			inject_joymax(0x7059,b'\x03\x00\x00\x00', False)
+
 
 		elif msg == "job":
 			inject_joymax(0x704C,b'\x0F\xEC\x19\x07\x30\x00\x00\x00',False)
@@ -812,7 +752,7 @@ def handle_chat(t,player,msg):
 		elif msg.startswith("HWT1"):
 			inject_teleport("Kings Valley","Pharaoh tomb (beginner)")
 		elif msg.startswith("Q1"):
-			inject_teleport("Harbor Manager Marwa","Pirate Morgun") or inject_teleport ("Outside-Togui","Inside-Togui") or inject_teleport ("Inside-Togui","Outside-Togui") or inject_teleport("Pirate Morgun","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Pirate Morgun") or inject_teleport("Priate Blackbeard","Harbor Manager Gale") or inject_teleport("Aircraft Ticket Seller Shard","Aircraft Ticket Seller Sangnia") or inject_teleport("Aircraft Ticket Seller Sangnia","Aircraft Ticket Seller Shard") or inject_teleport("Tunnel Manager Salhap","Tunnel Manager Maryokuk") or inject_teleport("Tunnel Manager Maryokuk","Tunnel Manager Salhap") or inject_teleport("Tunnel Manager Topni","Tunnel Manager Asui") or inject_teleport("Tunnel Manager Asui","Tunnel Manager Topni") or inject_teleport("Aircraft Ticket Seller Saena","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Ajati") or inject_teleport("Boat Ticket Seller Rahan","Boat Ticket Seller Salmai") or inject_teleport("Boat Ticket Seller Salmai","Boat Ticket Seller Rahan") or inject_teleport("Boat Ticket Seller Asimo","Boat Ticket Seller Asa") or inject_teleport("Boat Ticket Seller Asa","Boat Ticket Seller Asimo") or inject_teleport("Ferry Ticket Seller Tayun","Ferry Ticket Seller Doji") or inject_teleport("Ferry Ticket Seller Doji","Ferry Ticket Seller Tayun") or inject_teleport("Ferry Ticket Seller Hageuk","Ferry Ticket Seller Chau") or inject_teleport("Boat Ticket Seller Rahan","Ferry Ticket Seller Chau") or inject_teleport("Ferry Ticket Seller Chau","Boat Ticket Seller Rahan") or inject_teleport("Ferry Ticket Seller Chau","Ferry Ticket Seller Hageuk") or inject_teleport("forbidden plain","Kings Valley") or inject_teleport("Kings Valley","forbidden plain") or inject_teleport("abundance ground","Storm and cloud Desert") or inject_teleport("Storm and cloud Desert","abundance ground")
+			inject_teleport("Harbor Manager Marwa","Pirate Morgun") or inject_teleport ("Outside-Togui","Inside-Togui") or inject_teleport ("Petra Trade Route","Petra Trade Route Entrance") or inject_teleport ("Exit Portal","Petra Trade Route Exit") or inject_teleport ("Inside-Togui","Outside-Togui") or inject_teleport("Pirate Morgun","Harbor Manager Gale") or inject_teleport("Harbor Manager Gale","Pirate Morgun") or inject_teleport("Priate Blackbeard","Harbor Manager Gale") or inject_teleport("Aircraft Ticket Seller Shard","Aircraft Ticket Seller Sangnia") or inject_teleport("Aircraft Ticket Seller Sangnia","Aircraft Ticket Seller Shard") or inject_teleport("Tunnel Manager Salhap","Tunnel Manager Maryokuk") or inject_teleport("Tunnel Manager Maryokuk","Tunnel Manager Salhap") or inject_teleport("Tunnel Manager Topni","Tunnel Manager Asui") or inject_teleport("Tunnel Manager Asui","Tunnel Manager Topni") or inject_teleport("Aircraft Ticket Seller Saena","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Ajati") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Ajati") or inject_teleport("Boat Ticket Seller Rahan","Boat Ticket Seller Salmai") or inject_teleport("Boat Ticket Seller Salmai","Boat Ticket Seller Rahan") or inject_teleport("Boat Ticket Seller Asimo","Boat Ticket Seller Asa") or inject_teleport("Boat Ticket Seller Asa","Boat Ticket Seller Asimo") or inject_teleport("Ferry Ticket Seller Tayun","Ferry Ticket Seller Doji") or inject_teleport("Ferry Ticket Seller Doji","Ferry Ticket Seller Tayun") or inject_teleport("Ferry Ticket Seller Hageuk","Ferry Ticket Seller Chau") or inject_teleport("Boat Ticket Seller Rahan","Ferry Ticket Seller Chau") or inject_teleport("Ferry Ticket Seller Chau","Boat Ticket Seller Rahan") or inject_teleport("Ferry Ticket Seller Chau","Ferry Ticket Seller Hageuk") or inject_teleport("forbidden plain","Kings Valley") or inject_teleport("Kings Valley","forbidden plain") or inject_teleport("abundance ground","Storm and cloud Desert") or inject_teleport("Storm and cloud Desert","abundance ground")
 		elif msg.startswith("Q2"):
 			inject_teleport("Harbor Manager Marwa","Priate Blackbeard") or inject_teleport("Harbor Manager Gale","Priate Blackbeard") or inject_teleport("Pirate Morgun","Harbor Manager Marwa") or inject_teleport("Priate Blackbeard","Harbor Manager Marwa") or inject_teleport("Aircraft Ticket Seller Saena","Airship Ticket Seller Dawari") or inject_teleport("Airship Ticket Seller Dawari","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Sayun","Airship Ticket Seller Poy") or inject_teleport("Airship Ticket Seller Poy","Aircraft Ticket Seller Sayun") or inject_teleport("Aircraft Ticket Seller Ajati","Airship Ticket Seller Poy")
 		elif msg.startswith("Q3"):
@@ -825,6 +765,7 @@ def handle_chat(t,player,msg):
 				radius = 35
 				set_training_radius(radius)
 				log("AkashaHelper: Training radius reseted to "+str(radius)+" m.")
+				phBotChat.ClientNotice("AkashaHelper: Training radius reseted to "+str(radius)+" m.")
 			else:
 				try:
 					# split and parse movement radius
@@ -833,31 +774,38 @@ def handle_chat(t,player,msg):
 					radius = (radius if radius > 0 else radius*-1)
 					set_training_radius(radius)
 					log("AkashaHelper: Training radius set to "+str(radius)+" m.")
+					phBotChat.ClientNotice("AkashaHelper: Training radius set to "+str(radius)+" m.")
 				except:
 					log("AkashaHelper: Wrong training radius value!")
+					phBotChat.ClientNotice("AkashaHelper: Wrong training radius value!")
 		if msg.startswith('GOO '):
 			# deletes empty spaces on right
 			msg = msg[4:]
 			if msg:
 				# try to change to specified area name
 				if set_training_area(msg):
-					log('AkashaHelper Training area has been changed to ['+msg+']')
+					log('AkashaHelper: Training area has been changed to ['+msg+']')
+					phBotChat.ClientNotice('AkashaHelper:Training area has been changed to ['+msg+']')
 				else:
-					log('AkashaHelper Training area ['+msg+'] not found in the list')
+					log('AkashaHelper:Training area ['+msg+'] not found in the list')
+					phBotChat.ClientNotice('AkashaHelper: Training area ['+msg+'] not found in the list')
 					stop_bot
 					start_bot
 		elif msg == "ZERK":
 			log("AkashaHelper: Using Berserker mode")
+			phBotChat.ClientNotice("AkashaHelper: Using Berserker mode")
 			inject_joymax(0x70A7,b'\x01',False)
 		elif msg == "R":
 			# Quickly check if is dead
 			character = get_character_data()
 			if character['hp'] == 0:
 				# RIP
-				log('AkashaHelper Resurrecting at town...')
+				log('AkashaHelper: Resurrecting at town...')
+				phBotChat.ClientNotice('AkashaHelper: Resurrecting at town...')
 				inject_joymax(0x3053,b'\x01',False)
 			else:
-				log('AkashaHelper Trying to use return scroll...')
+				log('AkashaHelper: Trying to use return scroll...')
+				phBotChat.ClientNotice('AkashaHelper: Trying to use return scroll...')
 				# Avoid high CPU usage with too many chars at the same time
 				Timer(random.uniform(0.5,2),use_return_scroll).start()
 		elif msg.startswith("TP"):
@@ -877,6 +825,7 @@ def handle_chat(t,player,msg):
 			msgPacketLen = len(msgPacket)
 			if msgPacketLen == 0:
 				log("AkashaHelper: Incorrect structure to inject packet")
+				phBotChat.ClientNotice("AkashaHelper: Incorrect structure to inject packet")
 				return
 			# Check packet structure
 			opcode = int(msgPacket[0],16)
@@ -894,10 +843,12 @@ def handle_chat(t,player,msg):
 			inject_joymax(opcode,data,encrypted)
 			# Log the info
 			log("AkashaHelper: Injecting packet...\nOpcode: 0x"+'{:02X}'.format(opcode)+" - Encrypted: "+("Yes" if encrypted else "No")+"\nData: "+(' '.join('{:02X}'.format(int(msgPacket[x],16)) for x in range(dataIndex, msgPacketLen)) if len(data) else 'None'))
+			phBotChat.ClientNotice("AkashaHelper: Injecting packet...\nOpcode: 0x"+'{:02X}'.format(opcode)+" - Encrypted: "+("Yes" if encrypted else "No")+"\nData: "+(' '.join('{:02X}'.format(int(msgPacket[x],16)) for x in range(dataIndex, msgPacketLen)) if len(data) else 'None'))
 		elif msg.startswith("CHAT "):
 			handleChatCommand(msg[5:])
 		elif msg == "DC":
 			log("AkashaHelper: Disconnecting...")
+			phBotChat.ClientNotice("AkashaHelper: Disconnecting...")
 			disconnect()
 		elif msg == 'fare2':
 			random_string = random.choice(bakborta)
@@ -907,12 +858,14 @@ def handle_chat(t,player,msg):
 			if get_party():
 				# Left it
 				log("AkashaHelper: Leaving the party..")
+				phBotChat.ClientNotice("AkashaHelper: Leaving the party..")
 				inject_joymax(0x7061,b'',False)
 		elif msg == "leave":
 			# Check if has party
 			if get_party():
 				# Left it
 				log("AkashaHelper: Leaving the party..")
+				phBotChat.ClientNotice("AkashaHelper: Leaving the party..")
 				inject_joymax(0x7061,b'',False)
 		elif msg == "gold":
 			gold = get_inventory()['gold']
@@ -1019,6 +972,7 @@ def handle_chat(t,player,msg):
 			# Try dismount pet
 			if DismountPet(pet):
 				log("Plugin: Dismounting pet ["+pet+"]")
+				phBotChat.ClientNotice("Plugin: Dismounting pet ["+pet+"]")
 		if msg.startswith("RECALL "):
 			msg = msg[7:]
 			if msg:
@@ -1036,23 +990,27 @@ def handle_chat(t,player,msg):
 				if msg[0] == 'return':
 					# try to use it
 					if reverse_return(0,''):
-						log('AkashaHelper Using reverse to the last return scroll location')
+						log('AkashaHelper: Using reverse to the last return scroll location')
+						phBotChat.ClientNotice('AkashaHelper: Using reverse to the last return scroll location')
 				elif msg[0] == 'death':
 					# try to use it
 					if reverse_return(1,''):
-						log('AkashaHelper Using reverse to the last death location')
+						log('AkashaHelper: Using reverse to the last death location')
+						phBotChat.ClientNotice('AkashaHelper: Using reverse to the last death location')
 				elif msg[0] == 'player':
 					# Check existing name
 					if len(msg) >= 2:
 						# try to use it
 						if reverse_return(2,msg[1]):
-							log('AkashaHelper Using reverse to player "'+msg[1]+'" location')
+							log('AkashaHelper: Using reverse to player "'+msg[1]+'" location')
+							phBotChat.ClientNotice('AkashaHelper: Using reverse to player "'+msg[1]+'" location')
 				elif msg[0] == 'zone':
 					# Check existing zone
 					if len(msg) >= 2:
 						# try to use it
 						if reverse_return(3,msg[1]):
-							log('AkashaHelper Using reverse to zone "'+msg[1]+'" location')
+							log('AkashaHelper: Using reverse to zone "'+msg[1]+'" location')
+							phBotChat.ClientNotice('AkashaHelper: Using reverse to zone "'+msg[1]+'" location')
 		if msg.startswith("USE "):
 			# remove command
 			msg = msg[4:]
@@ -1093,6 +1051,7 @@ def event_loop():
 				# distance to move
 				movementDistance = playerDistance-followDistance
 				log("Following "+followPlayer+"...")
+				phBotChat.ClientNotice("Following "+followPlayer+"...")
 				move_to(movementDistance * x_unit + p['x'],movementDistance * y_unit + p['y'],0)
 		else:
 			# Avoid negative numbers
@@ -1201,7 +1160,7 @@ def btnUpdate_clicked():
 					# Update GUI
 					QtBind.removeAt(gui,lvwPlugins,indexSelected)
 					QtBind.append(gui,lvwPlugins,pyData['pName']+".py ("+pyData['pName']+" v"+pyVersion+") - Updated recently")
-					log('AkashaHelper "'+pyData['pName']+'" plugin has been successfully updated')
+					log('AkashaHelper: "'+pyData['pName']+'" plugin has been successfully updated')
 			except:
 				log("AkashaHelper: Error updating your plugin. Try again later..")
 
@@ -1227,5 +1186,5 @@ if os.path.exists(getPath()):
 else:
 	# Creating configs folder
 	os.makedirs(getPath())
-	log('AkashaHelper '+pName+' folder has been created')
+	log('AkashaHelper: '+pName+' folder has been created')
 
