@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '3.6'
+pVersion = '3.7'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -1034,6 +1034,50 @@ def handle_chat(t,player,msg):
 				last_word = words[-1]
 				random_string = random.choice(shtema)
 				phBotChat.All(f'{str(random_string)} ya {last_word} ')
+		if msg.startswith("add "):  # Check if the message starts with "add "
+			player = msg[4:].strip()  # Extract the part after "add "
+			addLeader(player)  # Call the function to add the player
+		if msg.startswith("remove "):  # Check if message starts with "remove"
+			player = msg[7:].strip()  # Extract player name after "remove"
+			remLeader(player)  # Call the function to remove the player
+def addLeader(player):
+			if inGame and player and not lstLeaders_exist(player):
+				# Init dictionary
+				data = {}
+				# Load config if exists
+				if os.path.exists(getConfig()):
+					with open(getConfig(), 'r') as f:
+						data = json.load(f)
+				# Add new leader
+				if "Leaders" not in data:
+					data['Leaders'] = []
+				data['Leaders'].append(player)
+				# Replace configs
+				with open(getConfig(), "w") as f:
+					f.write(json.dumps(data, indent=4, sort_keys=True))
+				QtBind.append(gui, lstLeaders, player)
+				QtBind.setText(gui, tbxLeaders, "")
+				log('AkashaHelper: Leader added [' + player + ']')
+				phBotChat.ClientNotice('AkashaHelper: Leader added [' + player + ']')
+
+def remLeader(player):
+			if inGame and player:
+				if os.path.exists(getConfig()):
+					data = {"Leaders": []}
+					with open(getConfig(), 'r') as f:
+						data = json.load(f)
+					try:
+						# Remove leader from file if exists
+						data["Leaders"].remove(player)
+						with open(getConfig(), "w") as f:
+							f.write(json.dumps(data, indent=4, sort_keys=True))
+					except ValueError:
+						log(f'AkashaHelper: Leader [{player}] not found in list.')
+						return
+				# Update GUI and notify
+				QtBind.remove(gui, lstLeaders, player)
+				log(f'AkashaHelper: Leader removed [{player}]')
+				phBotChat.ClientNotice(f'AkashaHelper: Leader removed [{player}]')
 # Called every 500ms
 def event_loop():
 	if inGame and followActivated:
