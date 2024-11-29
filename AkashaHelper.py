@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '3.5'
+pVersion = '3.6'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -26,11 +26,11 @@ followDistance = 0
 # Graphic user interface
 gui = QtBind.init(__name__,pName)
 largetong = 0
-QtBind.createLabel(gui,'Created by Akasha for Neon Online',525,10)
+QtBind.createLabel(gui,'Created by Akasha for Cerberus Online',525,10)
 QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via discord :Ak047',545,260)
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- GO : starts bot at current location\n- stop : stops bot and trace\n- trace or t or cmd trace :starts trace\n- nt : Stop trace\n- R : back to town or wake up\n- GO + X Y --> will go to these coords\n- locate : tells you the coords and region\n- rm : makes random movement\n- HWT1 : teleports to HWT beginner\n- HWT2 teleports to HWT Intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point\n- gold : tells you how much gold you have\n- sort : sort your inventory ',10,70)
-QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regtower : register Tower Defend \n- reglms :    register  Last Man Standing\n- regLS :      register  Lottery Silk\n- regsolo :   register  Survival Solo\n- regmaze:  register  Maze LMS\n- regpvp :    register  Random PvP\n- reguniq :   register  Random Unique\n- cards : tells you what fgw card you have and shields egy\n- prog : checks custom quest progress\n- check : tells you how many immo+astral you have\n- coins : Tells you how many coins you have\n- quest? : tells you if you have a custom quest or no',260,70)
+QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regTOWER : register Tower Defend \n- regLMS :    register  Last Man Standing\n- regCLASH :      register  Styria Clash\n- regSOLO :   register  Survival Solo\n- regTLMS:  register  Team Madness\n- regMAD :    register  Madness\n- regTMAD :   register  Madness Team\n- cards : tells you what fgw card you have and shields egy\n- prog : checks custom quest progress\n- check : tells you how many immo+astral you have\n- coins : Tells you how many coins you have\n- quest? : tells you if you have a custom quest or no',260,70)
 btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
@@ -66,21 +66,7 @@ def usescroll():
 				Injectbytes = data+p
 				inject_joymax(0x704C, Injectbytes, False)
 
-def walk():
-    global walk_flag
-    global current_step_index
-    walk_flag = True
-    current_step_index = 0  # Start from the first step
-    
-def findd(x, y):
-    global path
-    global path_dict
-    global walk_flag
-    global current_step_index
-    path = generate_path(x, y)
-    path_dict = {index: step for index, step in enumerate(path)}
-    walk_flag = True
-    current_step_index = 0
+
 def spwanpet():
 	inventory = get_inventory()
 	for slot, item in enumerate(inventory['items']):
@@ -552,14 +538,30 @@ def handle_chat(t,player,msg):
 	if player and lstLeaders_exist(player) or t == 100 or player == acc_name or player == "Akasha":
 
 		# Parsing message command
-		if msg == 'regtower':
-			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x74\x68\x65\x20\x54\x6F\x77\x65\x72',False)
-		if msg == 'reglms':
+		if msg == "regSOLO":
+			inject_joymax(0xC006,b'\x00\x0F\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x28\x53\x6F\x6C\x6F\x29',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Survival Solo. ENJOY <3')
+		elif msg == "regTOWER":
+			inject_joymax(0xC006,b'\x00\x10\x00\x44\x65\x66\x65\x6E\x64\x20\x54\x68\x65\x20\x54\x6F\x77\x65\x72',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Defend Tower. ENJOY <3')
+		elif msg == "regANGEL":
+			inject_joymax(0xC006,b'\x00\x10\x00\x41\x6E\x67\x65\x6C\x73\x20\x56\x73\x20\x44\x65\x76\x69\x6C\x73',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Angel vs Devil. ENJOY <3')
+		elif msg == "regCLASH":
+			inject_joymax(0xC006,b'\x00\x0C\x00\x53\x74\x79\x72\x69\x61\x20\x43\x6C\x61\x73\x68',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Styria Clash. ENJOY <3')
+		elif msg == "regLMS":
 			inject_joymax(0xC006,b'\x00\x11\x00\x4C\x61\x73\x74\x20\x4D\x61\x6E\x20\x53\x74\x61\x6E\x64\x69\x6E\x67',False)
-		if msg == 'regmad':
-			inject_joymax(0xC006,b'\x00\x0C\x00\x4D\x61\x64\x6E\x65\x73\x73\x20\x73\x6F\x6C\x6F',False)
-		if msg == 'regsolo':
-			inject_joymax(0xC006,b'\x00\x0D\x00\x53\x75\x72\x76\x69\x76\x61\x6C\x20\x53\x6F\x6C\x6F',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Last Man Standing. ENJOY <3')
+		elif msg == "regTLMS":
+			inject_joymax(0xC006,b'\x00\x12\x00\x4C\x61\x73\x74\x20\x54\x65\x61\x6D\x20\x53\x74\x61\x6E\x64\x69\x6E\x67',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Team Last Man Standing. ENJOY <3')
+		elif msg == "regMAD":
+			inject_joymax(0xC006,b'\x00\x07\x00\x4D\x61\x64\x6E\x65\x73\x73',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Madness. ENJOY <3')
+		elif msg == "regTMAD":
+			inject_joymax(0xC006,b'\x00\x17\x00\x4D\x61\x64\x6E\x65\x73\x73\x20\x28\x54\x65\x61\x6D\x20\x2D\x20\x52\x61\x6E\x64\x6F\x6D\x29',False)
+			phBotChat.ClientNotice('AkashaHelper: Done you are registed to Team Madness. ENJOY <3')
 		elif msg == "stop":
 			stop_bot()
 			stop_trace()
@@ -734,17 +736,18 @@ def handle_chat(t,player,msg):
 			set_training_position(p['region'], p['x'], p['y'],p['z'])
 			start_bot()
 
-
+		elif msg == "eq":
+			inject_joymax(0xC00C ,b'\x02\x00\x61\x71',False)
 
 		elif msg == "job":
 			inject_joymax(0x704C,b'\x0F\xEC\x19\x07\x30\x00\x00\x00',False)
 		elif msg == "jobin":
 			inject_joymax(0x705A,b'\03\x00\x00\x00\x02\xAD\x00\x00\x00',False)
-			if msg.lower() == "locate":
-				x = int(get_position()['x'])
-				y = int(get_position()['y'])
-				reg = get_position()['region']
-				area = get_zone_name(reg)
+		elif msg == "locate":
+			x = int(get_position()['x'])
+			y = int(get_position()['y'])
+			reg = get_position()['region']
+			area = get_zone_name(reg)
 			phBotChat.Private(player,f"Iam at {area} > X: {x} , Y: {y}")
 		elif msg.startswith("HWT2"):
 			inject_teleport("Kings Valley","Pharaoh tomb (intermediate)")
