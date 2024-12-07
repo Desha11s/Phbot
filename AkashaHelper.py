@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '3.7'
+pVersion = '3.8'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -862,6 +862,8 @@ def handle_chat(t,player,msg):
 				log("AkashaHelper: Leaving the party..")
 				phBotChat.ClientNotice("AkashaHelper: Leaving the party..")
 				inject_joymax(0x7061,b'',False)
+		elif msg == "ctp":
+			inject_joymax(0xC00C,b'\x11\x00\x72\x65\x67\x6F\x6E\x63\x75\x72\x72\x65\x6E\x74\x65\x76\x65\x6E\x74',False)
 		elif msg == "leave":
 			# Check if has party
 			if get_party():
