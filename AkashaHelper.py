@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '4.0'
+pVersion = '4.1'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -31,7 +31,7 @@ QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via di
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- GO : starts bot at current location\n- stop : stops bot and trace\n- trace or t or cmd trace :starts trace\n- nt : Stop trace\n- R : back to town or wake up\n- GO + X Y --> will go to these coords\n- locate : tells you the coords and region\n- rm : makes random movement\n- HWT1 : teleports to HWT beginner\n- HWT2 teleports to HWT Intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point\n- gold : tells you how much gold you have\n- sort : sort your inventory ',10,70)
 QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regTOWER : register Tower Defend \n- regLMS :    register  Last Man Standing\n- regCLASH :      register  Styria Clash\n- regSOLO :   register  Survival Solo\n- regTLMS:  register  Team Madness\n- regMAD :    register  Madness\n- regTMAD :   register  Madness Team\n- cards : tells you what fgw card you have and shields egy\n- prog : checks custom quest progress\n- check : tells you how many immo+astral you have\n- coins : Tells you how many coins you have\n- quest? : tells you if you have a custom quest or no',260,70)
-btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
+btnUpdate = QtBind.createButton(gui,'get_npc_id',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
 btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Update  ",300,8)
@@ -53,6 +53,10 @@ path_dict = {}
 current_step_index = 0
 walk_flag = False
 
+def get_npc_id():
+	log("  ss  ")
+	npcs = get_npcs()
+	log(f"{npcs}")
 
 def usescroll():
 	inventory = get_inventory()
@@ -71,7 +75,7 @@ def spwanpet():
 	inventory = get_inventory()
 	for slot, item in enumerate(inventory['items']):
 		if item:
-			if item['name'] == 'Battle Elephant Summon Scroll':
+			if item['name'] == 'War Elephant':
 				it = item['name']
 				item['slot'] = slot
 				p = struct.pack('<B', slot)	
@@ -912,6 +916,9 @@ def handle_chat(t,player,msg):
 					if item != None and "Bratoom" in item ['name']:
 						msg12 = f" i have egy eu shield"
 						phBotChat.Private(player,msg12)
+		elif msg == "npz":
+			npcs = get_npcs()
+			log(f"{npcs}")
 		elif msg == 'check':
 			items = get_inventory()['items']
 			if items != []:
@@ -940,7 +947,9 @@ def handle_chat(t,player,msg):
 			inv = get_inventory()['items']
 			log(f"{inv}")
 
-
+		elif msg == "spawn":
+			spwanpet()
+		
 
 
 
