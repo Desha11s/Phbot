@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '4.1'
+pVersion = '4.2'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -31,7 +31,7 @@ QtBind.createLabel(gui,'If you have more ideas to be added\n      Contact via di
 QtBind.createLabel(gui,'< All usual known commands are working and these are extra for easier usage >',11,55)
 QtBind.createLabel(gui,'- GO : starts bot at current location\n- stop : stops bot and trace\n- trace or t or cmd trace :starts trace\n- nt : Stop trace\n- R : back to town or wake up\n- GO + X Y --> will go to these coords\n- locate : tells you the coords and region\n- rm : makes random movement\n- HWT1 : teleports to HWT beginner\n- HWT2 teleports to HWT Intermidate\n- Q1/Q2/Q3 : known teleports from ZsZc\n- SETR : +radius to set\n- leave : leaves pt\n- R death : reverse to last death point\n- gold : tells you how much gold you have\n- sort : sort your inventory ',10,70)
 QtBind.createLabel(gui,'< These are some helpfull shortcuts > \n- DW : tp from bagdad to dw \n- BAG : tp from dw to baghdad\n- ALEX : tp from baghdad to alex(S)\n- regTOWER : register Tower Defend \n- regLMS :    register  Last Man Standing\n- regCLASH :      register  Styria Clash\n- regSOLO :   register  Survival Solo\n- regTLMS:  register  Team Madness\n- regMAD :    register  Madness\n- regTMAD :   register  Madness Team\n- cards : tells you what fgw card you have and shields egy\n- prog : checks custom quest progress\n- check : tells you how many immo+astral you have\n- coins : Tells you how many coins you have\n- quest? : tells you if you have a custom quest or no',260,70)
-btnUpdate = QtBind.createButton(gui,'get_npc_id',"  Update Plugin ",400,8)
+btnUpdate = QtBind.createButton(gui,'btnUpdate_clicked',"  Update Plugin ",400,8)
 lvwPlugins = QtBind.createList(gui,11,33,400,20)
 lstPluginsData = []
 btnCheck = QtBind.createButton(gui,'btnCheck_clicked',"  Check Update  ",300,8)
@@ -53,6 +53,12 @@ path_dict = {}
 current_step_index = 0
 walk_flag = False
 
+def reverse_translate(msg):
+    encoded = bytes([len(msg)]) + b"\x00"
+    encoded += b''.join(bytes([ord(char)]) for char in msg)
+    return encoded
+def format_encoded_data(encoded):
+    return ''.join([f'\\x{byte:02X}' for byte in encoded])
 def get_npc_id():
 	log("  ss  ")
 	npcs = get_npcs()
@@ -160,7 +166,22 @@ def btnRemLeader_clicked():
 			QtBind.remove(gui,lstLeaders,selectedItem)
 			log('AkashaHelper: Leader removed ['+selectedItem+']')
 			phBotChat.ClientNotice('AkashaHelper: Leader removed ['+selectedItem+']')
-
+def encode_gold_amount(gold_amount):
+    # Start with the static first byte (0x0D)
+    data = bytearray([0x0D])
+    
+    # Pack the gold amount into 8 bytes using little-endian encoding
+    # If the number is small (1, for example), it will have leading zeros
+    gold_bytes = struct.pack('<Q', gold_amount)  # 8-byte unsigned integer (little-endian)
+    
+    # Extend the data with the packed gold amount
+    data.extend(gold_bytes)
+  
+    return data
+def convert_to_data(value):
+    if not isinstance(value, int) or value < 0:
+        raise ValueError("Input must be a non-negative integer.")  
+    return value.to_bytes(4, byteorder='little')
 # Return True if nickname exist at the leader list
 def lstLeaders_exist(nickname):
 	nickname = nickname.lower()
@@ -950,8 +971,47 @@ def handle_chat(t,player,msg):
 		elif msg == "spawn":
 			spwanpet()
 		
+		elif msg == "x1":
+			inject_joymax(0x7082 ,b'',False)
+		elif msg == "x2":
+			inject_joymax(0x7083 ,b'',False)
+		elif msg.startswith("gebna"): 
+			parts = msg.split("-")
+			item_name = parts[1]
+			
+			if item_name == "gold":
+				amount = parts[2]
+				data = encode_gold_amount(int(amount))
+				inject_joymax(0x7034, data, False)
+				log(f"{data}")
+			else:
+				inventory = get_inventory()
+				for slot, item in enumerate(inventory['items']):
+					if item is not None:  # Ensure the item is not empty
+						# Check if the partial name is in the item's name
+						if item_name.lower() in item['name'].lower():  # Case-insensitive matching
+							data = b"\x04"
+							p = struct.pack('<B', slot) 
+							data = data + p  
+							inject_joymax(0x7034, data, False)
+							log(f"Item matched: {item['name']} in slot {slot}, Data: {data}")
 
 
+		elif msg == 'Ex':
+			findpt = get_party()  # Get the party data
+			log(f"{findpt}")  # Log the full party data
+
+			sender_name = player  # Replace this with the actual function/method to get the sender's name
+
+			# Iterate through the dictionary to find the sender
+			for member_id, member_data in findpt.items():
+				if member_data.get('name') == sender_name:
+					player_id = member_data.get('player_id') 
+					log(f"Player ID for {sender_name}: {player_id}")                  
+					data = convert_to_data(player_id)
+					inject_joymax(0x7081, data, False)
+					log(f"Converted data for {sender_name}'s player_id: {data}")
+					break
 
 
 		elif msg == 'coins':
@@ -1053,6 +1113,18 @@ def handle_chat(t,player,msg):
 		if msg.startswith("remove "):  # Check if message starts with "remove"
 			player = msg[7:].strip()  # Extract player name after "remove"
 			remLeader(player)  # Call the function to remove the player
+def handle_joymax(opcode, data):
+	if opcode == 0x3026:
+		# Extract the string length and the message from the data
+		string_length = int.from_bytes(data[:2], "little")
+		string_bytes = data[2:2 + string_length]
+		
+		# Clean up null bytes and decode the message
+		cleaned_bytes = string_bytes.replace(b'\x00', b'')
+		readable_text = cleaned_bytes.decode('ascii', errors='ignore')
+		if "INJECT" in readable_text:
+			return False
+	return True
 def addLeader(player):
 			if inGame and player and not lstLeaders_exist(player):
 				# Init dictionary
