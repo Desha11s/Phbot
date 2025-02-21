@@ -12,7 +12,7 @@ import urllib.request
 import re
 import shutil
 pName = 'AkashaHelper'
-pVersion = '4.2'
+pVersion = '4.5'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -818,6 +818,8 @@ def handle_chat(t,player,msg):
 					phBotChat.ClientNotice('AkashaHelper: Training area ['+msg+'] not found in the list')
 					stop_bot
 					start_bot
+		elif msg == "JUPITER":
+			inject_joymax(0x705A,b'\x13\x00\x00\x00\x02\x38\x01\x00\x00',False)
 		elif msg == "ZERK":
 			log("AkashaHelper: Using Berserker mode")
 			phBotChat.ClientNotice("AkashaHelper: Using Berserker mode")
