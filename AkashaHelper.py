@@ -401,8 +401,6 @@ def handle_chat(t,player,msg):
 	if player and lstLeaders_exist(player) or t == 100 or player == acc_name or player == "Akasha":
 		
 		if msg == "DC":
-			gui_log("AkashaHelper: Disconnecting...")
-			phBotChat.ClientNotice("AkashaHelper: Disconnecting...")
 			disconnect()
 		elif msg == "stop":
 			stop_bot()
