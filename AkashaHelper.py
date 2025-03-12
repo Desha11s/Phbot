@@ -14,7 +14,7 @@ import shutil
 from datetime import datetime
 
 pName = 'AkashaHelper'
-pVersion = '4.7'
+pVersion = '4.8'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
