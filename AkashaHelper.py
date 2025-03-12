@@ -14,7 +14,7 @@ import shutil
 from datetime import datetime
 
 pName = 'AkashaHelper'
-pVersion = '4.8'
+pVersion = '5.0'
 pUrl = 'https://raw.githubusercontent.com/Desha11s/Phbot/main/AkashaHelper.py'
 
 # ______________________________ Initializing ______________________________ #
@@ -82,7 +82,21 @@ def spwanpet():
 				data = b"\xED\x11"
 				Injectbytes = p+data
 				inject_joymax(0x704C, Injectbytes, False)
-
+def DismountPet(petType):
+    petType = petType.lower()
+    # just in case
+    if petType == 'pick':
+        return False
+    # get all summoned pets
+    pets = get_pets()
+    if pets:
+        for uid,pet in pets.items():
+            if pet['type'] == petType:
+                p = b'\x00'
+                p += struct.pack('I',uid)
+                inject_joymax(0x70CB,p, False)
+                return True
+    return False
 # Return xControl folder path
 def getPath():
 	return get_config_dir()+pName+"\\"
@@ -354,6 +368,8 @@ def handle_joymax(opcode, data):
 			return False
 		if "note" in readable_text:
 			return False
+		if "DC" in readable_text:
+			return False
 		
 				
 	
@@ -373,7 +389,7 @@ def teleported():
 	if not loggedIn:
 		phBotChat.ClientNotice("You Are Using AkashaHelper, For more ideas contact Discord: Ak047")
 		loggedIn = True
-def disconnect():
+def disconnected():
 	if loggedIn:
 		loggedIn = False
 # All chat messages received are sent to this function
@@ -383,7 +399,12 @@ def handle_chat(t,player,msg):
 	if t == 11:
 		msg = msg.split(': ',1)[1]
 	if player and lstLeaders_exist(player) or t == 100 or player == acc_name or player == "Akasha":
-		if msg == "stop":
+		
+		if msg == "DC":
+			gui_log("AkashaHelper: Disconnecting...")
+			phBotChat.ClientNotice("AkashaHelper: Disconnecting...")
+			disconnect()
+		elif msg == "stop":
 			stop_bot()
 			stop_trace()
 			gui_log("AkashaHelper: Bot stopped")
@@ -664,10 +685,11 @@ def handle_chat(t,player,msg):
 			phBotChat.ClientNotice("AkashaHelper: Injecting packet...\nOpcode: 0x"+'{:02X}'.format(opcode)+" - Encrypted: "+("Yes" if encrypted else "No")+"\nData: "+(' '.join('{:02X}'.format(int(msgPacket[x],16)) for x in range(dataIndex, msgPacketLen)) if len(data) else 'None'))
 		elif msg.startswith("CHAT "):
 			handleChatCommand(msg[5:])
-		elif msg == "DC":
-			gui_log("AkashaHelper: Disconnecting...")
-			phBotChat.ClientNotice("AkashaHelper: Disconnecting...")
-			disconnect()
+
+
+
+
+
 		elif msg == 'fare2':
 			random_string = random.choice(bakborta)
 			phBotChat.All(f'{str(random_string)}')
@@ -830,6 +852,7 @@ def handle_chat(t,player,msg):
 				item = GetItemByExpression(lambda n,s: msg in n or msg == s,13)
 				if item:
 					UseItem(item)
+		
 		if msg.startswith('tef'):
 			words = msg.split()
 			if len(words) > 0 and words[0] == 'tef':
